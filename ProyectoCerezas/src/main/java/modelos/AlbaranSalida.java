@@ -2,6 +2,8 @@ package modelos;
 
 import java.util.Date;
 
+import Utils.DateUtils;
+
 public class AlbaranSalida {
 	/**
 	 * PROPIEDADES
@@ -56,6 +58,9 @@ public class AlbaranSalida {
 	}
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+	public String getStringFecha(){
+		return DateUtils.formatearFecha(fecha);
 	}
 	public String getnFactura() {
 		return nFactura;

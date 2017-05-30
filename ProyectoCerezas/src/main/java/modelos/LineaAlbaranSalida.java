@@ -8,7 +8,7 @@ public class LineaAlbaranSalida{
 	private int idLinea;
 	private String tipo; //No hay que poner enum
 	private int nCajas;
-	private double peso; /*El peso tendría que ser double, en la Base de datos se ha puesto int*/
+	private double pesoCaja; /*El peso tendría que ser double, en la Base de datos se ha puesto int*/
 	private double precioCaja;
 	
 	/**
@@ -23,12 +23,12 @@ public class LineaAlbaranSalida{
 	 * @param peso
 	 * @param precioCaja
 	 */
-	public LineaAlbaranSalida(int nAlbaran,String tipo,int nCajas, double peso, double precioCaja){
+	public LineaAlbaranSalida(int nAlbaran,String tipo,int nCajas, double pesoCaja, double precioCaja){
 		this.nAlbaran=nAlbaran;
 		this.idLinea = -1;
 		this.tipo = tipo;
 		this.nCajas = nCajas;
-		this.peso = peso;
+		this.pesoCaja = pesoCaja;
 		this.precioCaja = precioCaja;
 	}
 	
@@ -40,12 +40,12 @@ public class LineaAlbaranSalida{
 	 * @param peso
 	 * @param precioCaja
 	 */
-	public LineaAlbaranSalida(int nAlbaran,int idLinea, String tipo, int nCajas, double peso, double precioCaja){
+	public LineaAlbaranSalida(int nAlbaran,int idLinea, String tipo, int nCajas, double pesoCaja, double precioCaja){
 		this.nAlbaran = nAlbaran;
 		this.idLinea = idLinea;
 		this.tipo = tipo;
 		this.nCajas = nCajas;
-		this.peso = peso;
+		this.pesoCaja = pesoCaja;
 		this.precioCaja = precioCaja;
 	}
 	
@@ -55,16 +55,18 @@ public class LineaAlbaranSalida{
 	public String getTipo() {
 		return tipo;
 	}
+	public double getPesoCaja() {
+		return pesoCaja;
+	}
+
+	public void setPesoCaja(double pesoCaja) {
+		this.pesoCaja = pesoCaja;
+	}
+
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
-	public double getPeso() {
-		return peso;
-	}
-	public void setPeso(double peso) {
-		this.peso = peso;
-	}
-
+	
 	public int getIdLinea() {
 		return idLinea;
 	}

@@ -8,8 +8,7 @@ public class LineaAlbaranEntrada {
 	private int nAlbaran;
 	private int idLinea;
 	private String tipo; //No hay que poner enum
-	private double peso;/*El peso tendría que ser double*/
-	/*En la base de datos estaba int, pero lo hemos cambiado*/
+	private double peso;
 	private double precioKg;
 	
 	/**
