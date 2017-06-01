@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
@@ -84,6 +84,7 @@ CREATE TABLE `clientes` (
 DROP TABLE IF EXISTS `factura_e`;
 CREATE TABLE `factura_e` (
   `n_factura` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
+  `fecha` date NOT NULL,
   `precio_bruto` double(10,2) NOT NULL,
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL
@@ -98,6 +99,7 @@ CREATE TABLE `factura_e` (
 DROP TABLE IF EXISTS `factura_s`;
 CREATE TABLE `factura_s` (
   `n_factura_s` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
+  `fecha` date NOT NULL,
   `precio_bruto` double(10,2) NOT NULL,
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL
