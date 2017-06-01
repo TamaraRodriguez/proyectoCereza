@@ -11,21 +11,21 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import modelos.LineaAlbaranEntrada;
+import modelos.LineaAlbaranSalida;
 
-public class DAOLineaAlbaranEntrada {
-	
-	class LineaAlbaranEntradaRowMapper implements RowMapper<LineaAlbaranEntrada>{
+public class DAOLineaAlbaranSalida {
+class LineaAlbaranSalidaRowMapper implements RowMapper<LineaAlbaranSalida>{
 		
-		public LineaAlbaranEntrada mapRow(ResultSet rs,int numRow) throws SQLException{
-			LineaAlbaranEntrada lae=new LineaAlbaranEntrada(
+		public LineaAlbaranSalida mapRow(ResultSet rs,int numRow) throws SQLException{
+			LineaAlbaranSalida las=new LineaAlbaranSalida(
 					rs.getInt("nAlbaran"),
 					rs.getInt("idLinea"),
 					rs.getString("tipo"),
-					rs.getDouble("peso"),
-					rs.getDouble("precioKg"));
+					rs.getInt("nCajas"),
+					rs.getDouble("pesoCaja"),
+					rs.getDouble("precioCaja"));
 			
-			return lae;
+			return las;
 		}
 		
 	}
@@ -42,22 +42,23 @@ public class DAOLineaAlbaranEntrada {
 	
 	/**
 	 * Crear una nueva linea en un albaran
-	 * @param LineaAlbaranEntrada
+	 * @param LineaAlbaranSalida
 	 * @return true o false
 	 */
-	public boolean create(LineaAlbaranEntrada lae){
+	public boolean create(LineaAlbaranSalida las){
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 				
-		String sql="insert into lineas_albaranes_e (n_albaran,tipo,peso,precio_kg)"
-				+ "values (?,?,?,?)";
+		String sql="insert into lineas_albaranes_s (n_albaran,tipo, n_cajas, peso_caja,precio_caja)"
+				+ "values (?,?,?,?,?)";
 
 		jdbc.update(
 			sql, new Object[]{
-					lae.getnAlbaran(),
-					lae.getTipo(),
-					lae.getPeso(),
-					lae.getPrecioKg()});
+					las.getnAlbaran(),
+					las.getTipo(),
+					las.getnCajas(),
+					las.getPesoCaja(),
+					las.getPrecioCaja()});
 					
 		return true;		
 	}
@@ -67,14 +68,14 @@ public class DAOLineaAlbaranEntrada {
 	 * @param idLinea
 	 * @return Linea Albaran
 	 */
-	public LineaAlbaranEntrada read(int idLinea){
-		LineaAlbaranEntrada lae=null;
+	public LineaAlbaranSalida read(int idLinea){
+		LineaAlbaranSalida las=null;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		String sql="select * from linea_albaran_e where id_linea=?";
+		String sql="select * from linea_albaran_s where id_linea=?";
 		try{
-			lae=jdbc.queryForObject(sql,new Object[]{idLinea},new LineaAlbaranEntradaRowMapper());
+			las=jdbc.queryForObject(sql,new Object[]{idLinea},new LineaAlbaranSalidaRowMapper());
 		}
 		catch(IncorrectResultSizeDataAccessException ics){
 			
@@ -83,7 +84,7 @@ public class DAOLineaAlbaranEntrada {
 			dae.printStackTrace();
 		}
 		
-		return lae;
+		return las;
 	}
 	
 	/**
@@ -92,14 +93,15 @@ public class DAOLineaAlbaranEntrada {
 	 * @return true o false
 	 * 
 	 */
-	public boolean update(LineaAlbaranEntrada lae){ 
+	public boolean update(LineaAlbaranSalida las){ 
 		boolean r=false;
 		
-		String sql="update LineaAlbaranEntrada set " 
+		String sql="update LineaAlbaranSalida set " 
 					+ "n_albaran=?,"
 					+ "tipo=?,"
-					+ "peso=?,"
-					+ "precio_kg=?"
+					+ "n_cajas,"
+					+ "peso_caja=?,"
+					+ "precio_caja=?"
 				+ "where id_linea=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -108,10 +110,11 @@ public class DAOLineaAlbaranEntrada {
 			int n=jdbc.update(
 					sql,
 					new Object[]{
-							lae.getnAlbaran(),
-							lae.getTipo(),
-							lae.getPeso(),
-							lae.getPrecioKg()});
+							las.getnAlbaran(),
+							las.getTipo(),
+							las.getnCajas(),
+							las.getPesoCaja(),
+							las.getPrecioCaja()});
 			r=n>0;
 		}
 		catch(DataAccessException dae){
@@ -124,15 +127,15 @@ public class DAOLineaAlbaranEntrada {
 	/**
 	 * Listar todos las lineas de albaran de un albaran
 	 * @param nAlbaran
-	 * @return lista de LineaAlbaranEntrada
+	 * @return lista de LineaAlbaranSalida
 	 * 
 	 */
-	public List<LineaAlbaranEntrada> listar(int nAlbaran){ 
-		List<LineaAlbaranEntrada> lista;
+	public List<LineaAlbaranSalida> listar(int nAlbaran){ 
+		List<LineaAlbaranSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from linea_albaran_e where n_albaran=?";
-		lista=jdbc.query(sql,new Object[]{nAlbaran},new LineaAlbaranEntradaRowMapper());
+		String sql="select * from linea_albaran_s where n_albaran=?";
+		lista=jdbc.query(sql,new Object[]{nAlbaran},new LineaAlbaranSalidaRowMapper());
 		return lista;
 	}
 	
@@ -146,7 +149,7 @@ public class DAOLineaAlbaranEntrada {
 		
 		boolean r=false;
 		
-		String sql="delete from linea_albaran_e where id_linea=?";
+		String sql="delete from linea_albaran_s where id_linea=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
