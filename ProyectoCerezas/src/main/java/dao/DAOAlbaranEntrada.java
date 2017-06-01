@@ -115,11 +115,16 @@ public class DAOAlbaranEntrada {
 		return r;
 	}
 	
-	public boolean facturar(int nAlbaran, int nFactura){ 
-		/*Modifica el nFactura para indicar así que el albarán ha sido facturado
+	/**
+	 * Modifica el nFactura para indicar así que el albarán ha sido facturado
 		si queremos quitar un albaran de una factura pasar nFactura=0 y el albarán 
-		volvería a quedar sin estar facturado*/
-		
+		volvería a quedar sin estar facturado
+	 * @param nAlbaran
+	 * @param nFactura
+	 * @return
+	 */
+	public boolean facturar(int nAlbaran, int nFactura){ 
+				
 		boolean r=false;
 		
 		String sql="update albaranes_entrada set n_factura=? where n_albaran=?";
@@ -178,8 +183,12 @@ public class DAOAlbaranEntrada {
 		return lista;
 	}
 	
+	/**
+	 * Borra un albaran, hay que controlar que sea un albarán que nFactura=0
+	 * @param nAlbaran
+	 * @return
+	 */
 	public boolean delete(int nAlbaran){ 
-		//Borra un albaran, hay que controlar que sea un albarán que nFactura=0 
 		
 		boolean r=false;
 		
