@@ -2,15 +2,16 @@ package modelos;
 
 import java.util.Date;
 
+import Utils.DateUtils;
+
 public class FacturaEntrada {
 	/**
 	 * PROPIEDADES
 	 */
-	private String nFactura;
+	private int nFactura;
 	private Date fecha;
 	private double precioBruto;
 	private int iva;
-	/*En la base de datos se ha introducido retenciones, pero quedamos en que no se iba a incluir*/
 	private double precioNeto;
 	
 	/**
@@ -23,8 +24,9 @@ public class FacturaEntrada {
 	 * @param precioBruto
 	 * @param iva
 	 * @param precioNeto
+	 * @param fecha
 	 */
-	public FacturaEntrada (String nFactura,Date fecha, double precioBruto, int iva, double precioNeto){
+	public FacturaEntrada (int nFactura,Date fecha, double precioBruto, int iva, double precioNeto){
 		this.nFactura = nFactura;
 		this.fecha=fecha;
 		this.precioBruto = precioBruto;
@@ -58,7 +60,7 @@ public class FacturaEntrada {
 		this.precioNeto = precioNeto;
 	}
 
-	public String getnFactura() {
+	public int getnFactura() {
 		return nFactura;
 	}
 	public Date getFecha() {
@@ -67,7 +69,10 @@ public class FacturaEntrada {
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	public void setnFactura(String nFactura) {
+	public String getStringFecha(){
+		return DateUtils.formatearFecha(fecha);
+	}
+	public void setnFactura(int nFactura) {
 		this.nFactura = nFactura;
 	}
 		

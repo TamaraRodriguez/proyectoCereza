@@ -2,11 +2,13 @@ package modelos;
 
 import java.util.Date;
 
+import Utils.DateUtils;
+
 public class FacturaSalida {
 	/**
 	 * PROPIEDADES
 	 */
-	private String nFactura;
+	private int nFactura;
 	private Date fecha;
 	private double precioBruto;
 	private int iva;
@@ -19,12 +21,13 @@ public class FacturaSalida {
 	public FacturaSalida(){}
 	/**
 	 * 	CONSTRUCTOR CON PARÁMETROS
+	 * @param fecha
 	 * @param nFactura
 	 * @param precioBruto
 	 * @param iva
 	 * @param precioNeto
 	 */
-	public FacturaSalida(String nFactura, Date fecha, double precioBruto, int iva, double precioNeto){
+	public FacturaSalida(int nFactura, Date fecha, double precioBruto, int iva, double precioNeto){
 		this.nFactura = nFactura;
 		this.fecha=fecha;
 		this.precioBruto = precioBruto;
@@ -58,16 +61,19 @@ public class FacturaSalida {
 		this.precioNeto = precioNeto;
 	}
 
-	public String getnFactura() {
+	public int getnFactura() {
 		return nFactura;
 	}
 	public Date getFecha() {
 		return fecha;
 	}
+	public String getStringFecha(){
+		return DateUtils.formatearFecha(fecha);
+	}
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
 	}
-	public void setnFactura(String nFactura) {
+	public void setnFactura (int nFactura) {
 		this.nFactura = nFactura;
 	}
 	

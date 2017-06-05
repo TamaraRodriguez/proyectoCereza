@@ -33,6 +33,8 @@ public class LineaAlbaranEntrada {
 	 * @param tipo
 	 * @param peso
 	 * @param precioKg
+	 * @param nAlbaran
+	 * @param idLinea
 	 */
 	public LineaAlbaranEntrada (int nAlbaran,int idLinea, String tipo, double peso, double precioKg){
 		this.nAlbaran=nAlbaran;

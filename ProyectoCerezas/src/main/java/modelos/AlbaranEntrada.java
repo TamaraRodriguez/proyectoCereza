@@ -13,8 +13,7 @@ public class AlbaranEntrada {
 	private int nAlbaran;
 	private int nSocio;
 	private Date fecha; /*Hacer un Utils para gestionar la fecha*/
-	private String lugarRecogida;
-	private String nFactura;
+	private int nFactura;
 	
 	/**
 	 * CONSTRUCTORES
@@ -24,28 +23,25 @@ public class AlbaranEntrada {
 	 * CONSTRUCTOR PARA EL FORMULARIO
 	 * @param nSocio
 	 * @param fecha
-	 * @param lugarRecogida
 	 * @param nFactura
 	 */
-	public AlbaranEntrada (int nSocio, Date fecha, String lugarRecogida, String nFactura){
+	public AlbaranEntrada (int nSocio, Date fecha, int nFactura){
 		this.nAlbaran = -1;
 		this.nSocio = nSocio;
 		this.fecha = fecha;
-		this.lugarRecogida = lugarRecogida;
 		this.nFactura = nFactura;	
 	}
 	/**
 	 * CONSTRUCTOR PARA EL ROWMAPPER
+	 * @param nAlbaran
 	 * @param nSocio
 	 * @param fecha
-	 * @param lugarRecogida
 	 * @param nFactura
 	 */
-	public AlbaranEntrada (int nAlbaran,int nSocio, Date fecha, String lugarRecogida, String nFactura){
+	public AlbaranEntrada (int nAlbaran,int nSocio, Date fecha, int nFactura){
 		this.nAlbaran = nAlbaran;
 		this.nSocio = nSocio;
 		this.fecha = fecha;
-		this.lugarRecogida = lugarRecogida;
 		this.nFactura = nFactura;	
 	}
 	/**
@@ -66,20 +62,18 @@ public class AlbaranEntrada {
 	public String getStringFecha(){
 		return DateUtils.formatearFecha(fecha);
 	}
-	public String getLugarRecogida() {
-		return lugarRecogida;
-	}
-	public void setLugarRecogida(String lugarRecogida) {
-		this.lugarRecogida = lugarRecogida;
-	}
-	public String getnFactura() {
+	public int getnFactura() {
 		return nFactura;
 	}
-	public void setnFactura(String nFactura) {
+	public void setnFactura(int nFactura) {
 		this.nFactura = nFactura;
 	}
 	public int getnAlbaran() {
 		return nAlbaran;
 	}
+	public void setnAlbaran(int nAlbaran) {
+		this.nAlbaran = nAlbaran;
+	}
+	
 	
 }

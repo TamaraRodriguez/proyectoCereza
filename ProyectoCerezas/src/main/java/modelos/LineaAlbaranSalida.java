@@ -37,8 +37,9 @@ public class LineaAlbaranSalida{
 	 * @param idLinea
 	 * @param tipo
 	 * @param nCajas
-	 * @param peso
+	 * @param pesoCaja
 	 * @param precioCaja
+	 * @param nAlbaran
 	 */
 	public LineaAlbaranSalida(int nAlbaran,int idLinea, String tipo, int nCajas, double pesoCaja, double precioCaja){
 		this.nAlbaran = nAlbaran;

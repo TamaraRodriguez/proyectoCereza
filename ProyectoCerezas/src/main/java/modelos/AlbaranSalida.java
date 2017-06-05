@@ -11,7 +11,7 @@ public class AlbaranSalida {
 	private int nAlbaran;
 	private int nCliente;
 	private Date fecha; /*Hacer un Utils para gestionar la fecha*/
-	private String nFactura;
+	private int nFactura;
 	/**
 	 * CONSTRUCTORES
 	 */
@@ -22,8 +22,9 @@ public class AlbaranSalida {
 	 * @param nCliente
 	 * @param fecha
 	 * @param nFactura
+	 * 
 	 */
-	public AlbaranSalida(int nCliente, Date fecha, String nFactura){
+	public AlbaranSalida(int nCliente, Date fecha, int nFactura){
 		this.nAlbaran = -1;
 		this.nCliente = nCliente;
 		this.fecha = fecha;
@@ -35,8 +36,9 @@ public class AlbaranSalida {
 	 * @param nCliente
 	 * @param fecha
 	 * @param nFactura
+	 * @param nAlbaran
 	 */
-	public AlbaranSalida(int nAlbaran,int nCliente, Date fecha, String nFactura){
+	public AlbaranSalida(int nAlbaran,int nCliente, Date fecha, int nFactura){
 		this.nAlbaran = nAlbaran;
 		this.nCliente = nCliente;
 		this.fecha = fecha;
@@ -62,13 +64,18 @@ public class AlbaranSalida {
 	public String getStringFecha(){
 		return DateUtils.formatearFecha(fecha);
 	}
-	public String getnFactura() {
+	public int getnFactura() {
 		return nFactura;
 	}
-	public void setnFactura(String nFactura) {
+	public void setnFactura(int nFactura) {
 		this.nFactura = nFactura;
 	}
 	public int getnAlbaran() {
 		return nAlbaran;
 	}
+
+	public void setnAlbaran(int nAlbaran) {
+		this.nAlbaran = nAlbaran;
+	}
+	
 }

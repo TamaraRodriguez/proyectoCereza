@@ -14,7 +14,7 @@ public class Persona {
 	private String email;
 	
 	/**
-	 * CONSTRUCTORES
+	 * CONSTRUCTORES (No haría falta el constructor aquí ya que las clases hijas heredan de aquí y es donde se creara el cliente o el agricultor)
 	 */
 	public Persona(){}
 	/**
@@ -36,6 +36,9 @@ public class Persona {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.email = email;
+	}
+	public void setIdPersona(int idPersona) {
+		this.idPersona = idPersona;
 	}
 	/**
 	 * Constructor con parámetros para crear objetos de tipo persona con el formulario.
