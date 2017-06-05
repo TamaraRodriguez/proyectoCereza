@@ -77,7 +77,7 @@ public class DAOPersonaImpl implements DAOPersona {
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		String sql="select id_persona from personas where cif_nif=?";
+		String sql="select * from personas where cif_nif=?";
 		try{
 			p=jdbc.queryForObject(sql,new Object[]{cifNif},new PersonaRowMapper());
 		}
