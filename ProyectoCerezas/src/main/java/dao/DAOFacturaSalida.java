@@ -11,7 +11,8 @@ public interface DAOFacturaSalida {
 		public boolean update(FacturaSalida fe);
 		public List<FacturaSalida> listar();
 		public List<FacturaSalida> listar(String cifNif);
-		public List<FacturaSalida> listar(Date fecha);
+		//public List<FacturaSalida> listar(Date fecha);
+		public List<FacturaSalida> buscarFecha (Date fechaInicio, Date fechaFinal);
 		/*public boolean delete(int nFactura);*/
 		
 

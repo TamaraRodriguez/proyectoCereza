@@ -17,8 +17,8 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
-
 import modelos.AlbaranEntrada;
+
 
 
 
@@ -242,6 +242,30 @@ public int create(final AlbaranEntrada a){
 		lista=jdbc.query(sql,new Object[]{d},new AlbaranEntradaRowMapper());
 		return lista;
 	}
+	
+	/**
+	 * funcion para acotar la fecha de busqueda
+	 * @param fechaInicio
+	 * @param fechaFinal
+	 * @return lista
+	 */
+	public List<AlbaranEntrada> buscarFecha (Date fechaInicio, Date fechaFinal){
+		
+		List<AlbaranEntrada> lista;
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
+		String sql="select * from albaranes_entrada where fecha BETWEEN '?' AND '?';";
+		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
+		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
+		lista=jdbc.query(sql,new Object[]{fi,ff},new AlbaranEntradaRowMapper());
+		return lista;
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Función sobrecargada que devuelve una lista con todos los albaranes no facturados.
 	 * Sql by laura y marco

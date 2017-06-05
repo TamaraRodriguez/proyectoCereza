@@ -17,7 +17,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import com.mysql.jdbc.Statement;
-
 import modelos.FacturaSalida;
 
 public class DAOFacturaSalidaImpl {
@@ -177,7 +176,7 @@ public class DAOFacturaSalidaImpl {
 	 * @return lista
 	 */
 	
-	public List<FacturaSalida> listar(Date fecha) {
+	/*public List<FacturaSalida> listar(Date fecha) {
 		
 		List<FacturaSalida> lista;
 		
@@ -185,6 +184,23 @@ public class DAOFacturaSalidaImpl {
 		String sql="select * from factura_s where fecha=?";
 		java.sql.Date d=new java.sql.Date(fecha.getTime());
 		lista=jdbc.query(sql,new Object[]{d},new FacturaSalidaRowMapper());
+		return lista;
+	}*/
+	/**
+	 * funcion para acotar la fecha de busqueda
+	 * @param fechaInicio
+	 * @param fechaFinal
+	 * @return lista
+	 */
+	public List<FacturaSalida> buscarFecha (Date fechaInicio, Date fechaFinal){
+		
+		List<FacturaSalida> lista;
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
+		String sql="select * from factura_s where fecha BETWEEN '?' AND '?';";
+		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
+		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
+		lista=jdbc.query(sql,new Object[]{fi,ff},new FacturaSalidaRowMapper());
 		return lista;
 	}
 	/*****************************************************************************************************************************/

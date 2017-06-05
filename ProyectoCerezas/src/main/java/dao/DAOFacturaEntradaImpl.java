@@ -171,7 +171,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 		lista=jdbc.query(sql,new Object[]{cifNif}, new FacturaEntradaRowMapper());
 		return lista;
 	}
-
+/*
 	public List<FacturaEntrada> listar(Date fecha) {
 		
 		List<FacturaEntrada> lista;
@@ -182,6 +182,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 		lista=jdbc.query(sql,new Object[]{d},new FacturaEntradaRowMapper());
 		return lista;
 	}
+	*/
 	/*****************************************************************************************************************************/
 	/*Creo que hablamos que no se podía eliminar una factura.
 	 Hariamos un método que nos anulara la factura.*/
@@ -194,5 +195,22 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 
 		return n>0;
 	}*/
-
+	/**
+	 * funcion para acotar la fecha de busqueda
+	 * @param fechaInicio
+	 * @param fechaFinal
+	 * @return lista
+	 */	
+	
+	public List<FacturaEntrada> buscarFecha (Date fechaInicio, Date fechaFinal){
+		
+		List<FacturaEntrada> lista;
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
+		String sql="select * from factura_e where fecha BETWEEN '?' AND '?';";
+		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
+		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
+		lista=jdbc.query(sql,new Object[]{fi,ff},new FacturaEntradaRowMapper());
+		return lista;
+	}
 }

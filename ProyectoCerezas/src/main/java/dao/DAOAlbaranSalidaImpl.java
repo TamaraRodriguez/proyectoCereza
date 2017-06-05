@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import modelos.AlbaranSalida;
 
+
 public class DAOAlbaranSalidaImpl {
 class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		
@@ -232,6 +233,25 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		lista=jdbc.query(sql,new Object[]{d},new AlbaranSalidaRowMapper());
 		return lista;
 	}
+	
+	/**
+	 * funcion para acotar la fecha de busqueda
+	 * @param fechaInicio
+	 * @param fechaFinal
+	 * @return lista
+	 */
+	public List<AlbaranSalida> buscarFecha (Date fechaInicio, Date fechaFinal){
+		
+		List<AlbaranSalida> lista;
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
+		String sql="select * from albaranes_salida where fecha BETWEEN '?' AND '?';";
+		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
+		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
+		lista=jdbc.query(sql,new Object[]{fi,ff},new AlbaranSalidaRowMapper());
+		return lista;
+	}
+	
 	/************************************************************************************************************/
 	/*Dentro del select hemos puesto los campos de AlbaranSalida habría que discutir que campos vamos a mostrar*/
 	/**
