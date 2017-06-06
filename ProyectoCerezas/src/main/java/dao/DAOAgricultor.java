@@ -12,10 +12,10 @@ public interface DAOAgricultor {
 	public void setDataSource(DataSource dataSource);
 	/*CRUD*/
 	public boolean create(final Agricultor a);
-	public Agricultor read(int n_socio);
+	public Agricultor read(int idPersona);
 	public List<Agricultor> read(String busqueda);
 	public boolean update(Agricultor c);
 	public List<Agricultor> listar();
-	public boolean delete (int n_socio);
-	
+	public boolean baja (Agricultor c);
+	public boolean delete(int nSocio); //Solo se usa para los test
 }

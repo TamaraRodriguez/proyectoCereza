@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dao.DAOPersona;
 import junit.framework.TestCase;
+import modelos.Agricultor;
 import modelos.Persona;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,10 +24,12 @@ public class DAOPersonaTest extends TestCase {
 	public void testCreate(){
 		
 		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
-		
+		Persona p2=new Persona(-1, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+				
 		Properties p=System.getProperties();
 		System.out.println(p.getProperty("java.class.path"));
 		dao.create(per);
+		dao.create(p2);
 		
 		Persona u=dao.read(per.getCifNif());
 		

@@ -29,7 +29,7 @@ public class Persona {
 	 */
 	public Persona (int idPersona,String cifNif, String nombreRazonSocial, String apellidos, 
 			String direccion, String telefono, String email){
-		this.idPersona = -1;
+		this.idPersona = idPersona;
 		this.cifNif = cifNif;
 		this.nombreRazonSocial = nombreRazonSocial;
 		this.apellidos = apellidos;
