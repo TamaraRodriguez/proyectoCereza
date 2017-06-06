@@ -10,7 +10,6 @@ public class FacturaEntrada {
 	 */
 	private int nFactura;
 	private Date fecha;
-	private double precioBruto;
 	private int iva;
 	private double precioNeto;
 	
@@ -26,23 +25,15 @@ public class FacturaEntrada {
 	 * @param precioNeto
 	 * @param fecha
 	 */
-	public FacturaEntrada (int nFactura,Date fecha, double precioBruto, int iva, double precioNeto){
+	public FacturaEntrada (int nFactura,Date fecha, int iva, double precioNeto){
 		this.nFactura = nFactura;
 		this.fecha=fecha;
-		this.precioBruto = precioBruto;
 		this.iva = iva;
 		this.precioNeto = precioNeto;
 	}
 	/**
 	 * GETTERS Y SETTERS
 	 */
-	public double getPrecioBruto() {
-		return precioBruto;
-	}
-
-	public void setPrecioBruto(double precioBruto) {
-		this.precioBruto = precioBruto;
-	}
 
 	public int getIva() {
 		return iva;

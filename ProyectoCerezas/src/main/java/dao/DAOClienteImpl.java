@@ -89,11 +89,6 @@ public class DAOClienteImpl implements DAOCliente {
 
 	}
 
-	/*******************************************************************************************************************/
-	/**
-	 * Tenemos que preguntar si al final vamos a buscar por número de cliente o
-	 * por dni.
-	 */
 	/**
 	 * Función para recuperar un objeto cliente
 	 * 
@@ -105,7 +100,9 @@ public class DAOClienteImpl implements DAOCliente {
 
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
-		String sql = "select personas.*, clientes.n_cliente from personas join clientes ON (clientes.id_persona=personas.id_persona) where clientes.n_cliente=?";
+		String sql = "select personas.*, clientes.n_cliente from personas"
+				+ " join clientes ON (clientes.id_persona=personas.id_persona)"
+				+ " where clientes.n_cliente=?";
 		try {
 			c = jdbc.queryForObject(sql, new Object[] { nCliente }, new ClienteRowMapper());
 		} catch (IncorrectResultSizeDataAccessException ics) {
@@ -133,9 +130,10 @@ public class DAOClienteImpl implements DAOCliente {
 
 		String sql = "select personas.*, clientes.n_cliente "
 				+ "from personas join clientes on (personas.id_persona=clientes.id_persona) "
-				+ "where cif_nif like ? or nombre_razon_social like ? or apellido like ? or telefono like ?";
+				+ "where cif_nif like ? or nombre_razon_social like ? or apellidos like ? or telefono like ?";
 		try {
-			lista = jdbc.query(sql, new Object[] { "%" + busqueda + "%" }, new ClienteRowMapper());
+			String b="%"+busqueda+"%";
+			lista = jdbc.query(sql, new Object[] {b,b,b,b}, new ClienteRowMapper());
 		} catch (IncorrectResultSizeDataAccessException ics) {
 			System.out.println(
 					"ArrayList <Agricultor> read - Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
@@ -173,7 +171,7 @@ public class DAOClienteImpl implements DAOCliente {
 					c.getDireccion(), 
 					c.getTelefono(), 
 					c.getEmail(), 
-					c.getIdPersona() });
+					c.getIdPersona()});
 			r = n > 0;
 			
 		} catch (DataAccessException dae) {

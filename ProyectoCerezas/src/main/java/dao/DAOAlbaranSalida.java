@@ -17,9 +17,9 @@ public interface DAOAlbaranSalida {
 	public boolean update(AlbaranSalida as);
 	public boolean facturar(int nAlbaran, int nFactura);
 	public List<AlbaranSalida> listar();
-	public List<AlbaranSalida> listar(int cifNif);
+	public List<AlbaranSalida> listar(String cifNif);
 	//public List<AlbaranSalida> listar(Date fecha);
 	public List<AlbaranSalida> buscarFecha (Date fechaInicio, Date fechaFinal);
-	public List<AlbaranSalida> listarPendientes(int cifNif);
+	public List<AlbaranSalida> listarPendientes(String cifNif);
 	public boolean delete(int nAlbaran);
 }

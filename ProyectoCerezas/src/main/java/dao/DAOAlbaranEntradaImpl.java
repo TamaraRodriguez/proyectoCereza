@@ -49,8 +49,7 @@ public class DAOAlbaranEntradaImpl {
 		this.dataSource = dataSource;
 	}
 	
-	/***************************************************************************************/
-	/*Hay que elegir entre un método de creación y otro*/
+
 	/**
 	 * Función para crear un objeto AlbaranEntrada, que devuelve el nAlbaran del objeto creado.
 	 * @param a
@@ -66,7 +65,7 @@ public int create(final AlbaranEntrada a){
 		final java.sql.Date d = new java.sql.Date(a.getFecha().getTime());
 		
 		jdbc.update(new PreparedStatementCreator(){
-
+			
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, a.getnAlbaran());
@@ -84,29 +83,7 @@ public int create(final AlbaranEntrada a){
 		return nAlbaran;		
 	}
 	
-	/*public int create(AlbaranEntrada ae){
-		int nAlbaran=-1;
-		
-		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		
-		String sql="insert into albaranes_entrada (n_socio,fecha,n_factura)"
-				+ "values (?,?,?)";
-		java.sql.Date d=new java.sql.Date(ae.getFecha().getTime());
-		try{
-			jdbc.update(
-				sql,
-				new Object[]{ae.getnSocio(),d,ae.getnFactura()});
-			
-			//Recupero el n_albaran del ultimo albaran añadido para luego poder incluirlo en las lineas de albaran creadas
-			
-			nAlbaran=jdbc.queryForObject("SELECT MAX(n_albaran) FROM albaranes_entrada", Integer.class);
-			
-		}
-		catch(DataAccessException dae){
-			dae.printStackTrace();
-		}
-		return nAlbaran;		
-	}*/
+	
 	/**
 	 * Función que lee y devuelve un objeto AlbaranEntrada. Se busca por nAlbaran
 	 * @param nAlbaran
@@ -131,6 +108,7 @@ public int create(final AlbaranEntrada a){
 		
 		return ae;
 	}
+	
 	/**
 	 * Función que modifica el objeto AlbaranEntrada. 
 	 * @param ae
@@ -143,7 +121,7 @@ public int create(final AlbaranEntrada a){
 					+ "n_socio=?, "
 					+ "fecha=?, "
 					+ "n_factura=? "
-				+ "where n_albaran=?";
+				+ "where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -168,7 +146,7 @@ public int create(final AlbaranEntrada a){
 	
 	/**
 	 * Modifica el nFactura para indicar así que el albarán ha sido facturado
-		si queremos quitar un albaran de una factura pasar nFactura=0 y el albarán 
+		si queremos quitar un albaran de una factura pasar nFactura is null y el albarán 
 		volvería a quedar sin estar facturado
 	 * @param nAlbaran
 	 * @param nFactura
@@ -178,7 +156,7 @@ public int create(final AlbaranEntrada a){
 				
 		boolean r=false;
 		
-		String sql="update albaranes_entrada set n_factura=? where n_albaran=?";
+		String sql="update albaranes_entrada set n_factura=? where n_albaran=?  and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -197,14 +175,14 @@ public int create(final AlbaranEntrada a){
 	}
 	
 	/**
-	 * Creamos una función que duelve una lista con todos los albaranes de entrada.
+	 * Creamos una función que devuelve una lista con todos los albaranes de entrada.
 	 * @return lista
 	 */
 	public List<AlbaranEntrada> listar(){
 		List<AlbaranEntrada> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from albaranes_entrada";
+		String sql="select * from albaranes_entrada order by fecha desc";
 		lista=jdbc.query(sql,new AlbaranEntradaRowMapper());
 		return lista;
 	}
@@ -215,25 +193,26 @@ public int create(final AlbaranEntrada a){
 	 * @param cifNif
 	 * @return
 	 */
-	public List<AlbaranEntrada> listar(int cifNif){ //Devuelve todos los albaranes por cifNif
+	public List<AlbaranEntrada> listar(String cifNif){ //Devuelve todos los albaranes por cifNif
 		List<AlbaranEntrada> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		String sql="SELECT albaranes_entrada.n_albaran,albaranes_entrada.n_socio,"
-				+ "albaranes_entrada.fecha,albaranes_entrada.n_factura from albaranes_entrada "
-				+ "join agricultores on(agricultores.n_socio=albaranes_entrada.n_socio) JOIN "
-				+ "personas on (personas.id_persona=agricultores.id_persona)WHERE cif_nif=?;";
+				+ "albaranes_entrada.fecha,albaranes_entrada.n_factura "
+				+ "from albaranes_entrada "
+				  + "join agricultores on(agricultores.n_socio=albaranes_entrada.n_socio) "
+				  + "JOIN personas on (personas.id_persona=agricultores.id_persona)"
+				+ "WHERE cif_nif=?;";
 		lista=jdbc.query(sql,new Object[]{cifNif},new AlbaranEntradaRowMapper());
 		return lista;
 	}
-	/***********************************************************************************************************************/
-	/*En principio, lo realizamos escogiendo sólo un día pero lo suyo es hacerlo con rangos de fechas*/
+	
 	/**
 	 * Función sobrecargada para buscar por fecha.
 	 * @param fecha
 	 * @return  lista -- Devuelve una lista con todos los objetos AlbaranEntrada
 	 */
-	public List<AlbaranEntrada> listar(Date fecha){ 
+	/*public List<AlbaranEntrada> listar(Date fecha){ 
 		List<AlbaranEntrada> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -241,10 +220,10 @@ public int create(final AlbaranEntrada a){
 		java.sql.Date d=new java.sql.Date(fecha.getTime());
 		lista=jdbc.query(sql,new Object[]{d},new AlbaranEntradaRowMapper());
 		return lista;
-	}
+	}*/
 	
 	/**
-	 * funcion para acotar la fecha de busqueda
+	 * Función para acotar la fecha de busqueda
 	 * @param fechaInicio
 	 * @param fechaFinal
 	 * @return lista
@@ -253,8 +232,7 @@ public int create(final AlbaranEntrada a){
 		
 		List<AlbaranEntrada> lista;
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
-		String sql="select * from albaranes_entrada where fecha BETWEEN '?' AND '?';";
+		String sql="select * from albaranes_entrada where fecha BETWEEN ? AND ?;";
 		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
 		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
 		lista=jdbc.query(sql,new Object[]{fi,ff},new AlbaranEntradaRowMapper());
@@ -272,7 +250,7 @@ public int create(final AlbaranEntrada a){
 	 * @param cifNif
 	 * @return lista
 	 */
-	public List<AlbaranEntrada> listarPendientes(int cifNif){ 
+	public List<AlbaranEntrada> listarPendientes(String cifNif){ 
 		
 		List<AlbaranEntrada> lista;
 		

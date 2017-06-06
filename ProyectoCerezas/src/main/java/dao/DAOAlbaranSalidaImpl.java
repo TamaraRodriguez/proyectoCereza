@@ -46,8 +46,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	/***************************************************************************************/
-	/*Hay que elegir entre un método de creación y otro*/
+	
 	/**
 	 * Función para crear un objeto AlbaranEntrada, que devuelve el nAlbaran del objeto creado.
 	 * @param a
@@ -80,29 +79,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		a.setnAlbaran(nAlbaran);
 		return nAlbaran;		
 	}
-	/*public int create(AlbaranSalida as){
-		int nAlbaran=-1;
-		
-		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		
-		String sql="insert into albaranes_salida (n_socio,fecha,n_factura)"
-				+ "values (?,?,?)";
-		java.sql.Date d=new java.sql.Date(as.getFecha().getTime());
-		try{
-			jdbc.update(
-				sql,
-				new Object[]{as.getnCliente(),d,as.getnFactura()});
-			
-			//Recupero el n_albaran del ultimo albaran añadido para luego poder incluirlo en las lineas de albaran creadas
-
-			nAlbaran=jdbc.queryForObject("SELECT MAX(n_albaran) FROM albaranes_salida", Integer.class );
-			
-		}
-		catch(DataAccessException dae){
-			dae.printStackTrace();
-		}
-		return nAlbaran;		
-	}*/
+	
 	
 	/**
 	 * Función que devuelve un objeto AlbaranSalida 
@@ -129,6 +106,11 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		return as;
 	}
 	
+	/**
+	 * Función que modifica un objeto AlbaranSalida
+	 * @param as
+	 * @return r -- Comprueba si se ha ejecutado bien la función.
+	 */
 	public boolean update(AlbaranSalida as){ //Modifica un albaran
 		boolean r=false;
 		
@@ -136,7 +118,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 					+ "n_cliente=?, "
 					+ "fecha=?,"
 					+ "n_factura=? "
-				+ "where n_albaran=?";
+				+ "where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -170,7 +152,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 
 		boolean r=false;
 		
-		String sql="update albaranes_salida set n_factura=? where n_albaran=?";
+		String sql="update albaranes_salida set n_factura=? where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -195,18 +177,17 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		List<AlbaranSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from albaranes_salida";
+		String sql="select * from albaranes_salida order by fecha desc";
 		lista=jdbc.query(sql,new AlbaranSalidaRowMapper());
 		return lista;
 	}
 	/********************************************************************************************/
-	/*Hay que preguntar si hacemos un list <AlbaranSalida> listar sólo para los facturados. Tenemos uno para los no facturados.*/
 	/*Dentro del select hemos puesto los campos de AlbaranSalida habría que discutir que campos vamos a mostrar*/
 	/**
 	 * Creamos una función que duelve una lista con todos los albaranes de entrada filtrados por cif_nif.
 	 * @return lista
 	 */
-	public List<AlbaranSalida> listar(int cifNif){ 
+	public List<AlbaranSalida> listar(String cifNif){ 
 		List<AlbaranSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -244,8 +225,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		
 		List<AlbaranSalida> lista;
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
-		String sql="select * from albaranes_salida where fecha BETWEEN '?' AND '?';";
+		String sql="select * from albaranes_salida where fecha BETWEEN ? AND ? order by fecha desc;";
 		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
 		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
 		lista=jdbc.query(sql,new Object[]{fi,ff},new AlbaranSalidaRowMapper());
@@ -259,7 +239,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 	 * @param cifNif
 	 * @return lista
 	 */
-	public List<AlbaranSalida> listarPendientes(int cifNif){ 
+	public List<AlbaranSalida> listarPendientes(String cifNif){ 
 		
 		List<AlbaranSalida> lista;
 		

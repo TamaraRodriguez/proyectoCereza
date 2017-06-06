@@ -34,7 +34,9 @@ public class DAOVariedadesImpl implements DAOVariedades {
 		}
 		
 	}
-	
+	/**
+	 * Establecemos la conexión con la base de datos.
+	 */
 	private DataSource dataSource;
 	
 	public DataSource getDataSource() {
@@ -58,18 +60,18 @@ public class DAOVariedadesImpl implements DAOVariedades {
 		String sql="insert into variedades (tipo,precio_kg,peso_caja,precio_caja)"
 				+ "values (?,?,?,?)";
 
-		jdbc.update(
+		int n = jdbc.update(
 			sql, new Object[]{
 					v.getTipo(),
 					v.getPrecioKg(),
 					v.getPesoCaja(),
 					v.getPrecioCaja()});
 					
-		return true;		
+		return n>0;		
 	}
 	
 	/**
-	 * Recibe un tipo y devuelve todos las datos que correspnden a este
+	 * Recibe un tipo y devuelve todos las datos que corresponden a este
 	 * @param tipo
 	 * @return Variedad v
 	 */
@@ -106,7 +108,7 @@ public class DAOVariedadesImpl implements DAOVariedades {
 		String sql="update variedades set " 
 					+ "precio_kg=?,"
 					+ "peso_caja=?,"
-					+ "precio_caja=?"
+					+ "precio_caja=? "
 				+ "where tipo=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -138,7 +140,7 @@ public class DAOVariedadesImpl implements DAOVariedades {
 		List<Variedades> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from variedades";
+		String sql="select * from variedades order by tipo desc";
 		lista=jdbc.query(sql,new VariedadesRowMapper());
 		return lista;
 	}
@@ -149,21 +151,18 @@ public class DAOVariedadesImpl implements DAOVariedades {
 	 * facturas o albaranes generados anteriormente, 
 	 * ya que el borrado no es en cascada
 	 * @param nAlbaran
-	 * @return
+	 * @return boolean -- Comprobar si la función se ha llevado a cabo correctamente
 	 */
 	
 	public boolean delete(String tipo){ 
-		
-		boolean r=false;
 		
 		String sql="delete from variedades where tipo=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
 		int n=jdbc.update(sql,new Object[]{tipo});
-		r=n>0;
-		
-		return r;
+
+		return n>0;
 	}
 	
 }

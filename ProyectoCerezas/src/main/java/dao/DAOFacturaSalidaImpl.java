@@ -24,7 +24,7 @@ public class DAOFacturaSalidaImpl {
 
 		public FacturaSalida mapRow(ResultSet rs, int numRow) throws SQLException {
 			FacturaSalida fs = new FacturaSalida(rs.getInt("n_factura"),
-					new java.util.Date(rs.getDate("fecha").getTime()), rs.getDouble("precio_bruto"), rs.getInt("iva"),
+					new java.util.Date(rs.getDate("fecha").getTime()), rs.getInt("iva"),
 					rs.getDouble("precio_neto"));
 
 			return fs;
@@ -53,10 +53,8 @@ public class DAOFacturaSalidaImpl {
 		int nFactura = -1;
 		
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-		/*****************************************************************************************************************************/
-		/* Si tenemos precio_bruto e iva, no haría falta guardar precio_neto
-		 * Tenemos que comprobar si tenemos que devolver un boolean  */
-		final String sql = "insert into factura_s (fecha, precio_bruto, iva, precio_neto) values (?,?,?,?)";
+
+		final String sql = "insert into factura_s (fecha, iva, precio_neto) values (?,?,?)";
 
 		GeneratedKeyHolder kh = new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(fs.getFecha().getTime());
@@ -65,9 +63,8 @@ public class DAOFacturaSalidaImpl {
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 				statement.setDate(1, d);
-				statement.setDouble(2, fs.getPrecioBruto());
-				statement.setInt(3, fs.getIva());
-				statement.setDouble(4, fs.getPrecioNeto());
+				statement.setInt(2, fs.getIva());
+				statement.setDouble(3, fs.getPrecioNeto());
 				return statement;
 			}
 		}, kh);
@@ -96,9 +93,7 @@ public class DAOFacturaSalidaImpl {
 		
 		return fs;
 	}
-	/*****************************************************************************************************************************/
-	/*Como comentamos había problemas con la modificación de una factura.
-	 * Al final que hacemos ¿Modificamos la factura? Y si la modicamos, ¿Qué campos tocamos?*/
+
 	/**
 	 * Función que modifica el objeto FacturaSalida. 
 	 * @param fs -- Se introduce un FacturaSalida
@@ -109,7 +104,6 @@ public class DAOFacturaSalidaImpl {
 		
 		String sql="update factura_s set "
 					+ "fecha=?, "	
-					+ "precio_bruto=?, "
 					+ "iva=?, "
 					+ "precio_neto=? "
 				+ "where n_factura=?";
@@ -121,7 +115,6 @@ public class DAOFacturaSalidaImpl {
 					sql,
 					new Object[]{
 							new java.sql.Date(fs.getFecha().getTime()),
-							fs.getPrecioBruto(),
 							fs.getIva(),
 							fs.getPrecioNeto(),
 							fs.getnFactura()});
@@ -144,7 +137,7 @@ public class DAOFacturaSalidaImpl {
 		List<FacturaSalida> lista = null;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from factura_s";
+		String sql="select * from factura_s order by fecha desc";
 		lista=jdbc.query(sql,new FacturaSalidaRowMapper());
 		return lista;
 	}
@@ -159,8 +152,9 @@ public class DAOFacturaSalidaImpl {
 		List<FacturaSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="SELECT factura_s.precio_bruto,factura_s.iva, "
-				+ "factura_s.precio_neto, factura_s.n_factura,"
+		String sql="SELECT factura_s.iva, "
+				+ "factura_s.precio_neto, "
+				+ "factura_s.n_factura,"
 				+ "factura_s.fecha "
 				+ "from factura_s "
 					+ "join albaranes_salida on(factura_s.n_factura=albaranes_salida.n_factura)"
@@ -187,7 +181,7 @@ public class DAOFacturaSalidaImpl {
 		return lista;
 	}*/
 	/**
-	 * funcion para acotar la fecha de busqueda
+	 * Función para acotar la fecha de busqueda
 	 * @param fechaInicio
 	 * @param fechaFinal
 	 * @return lista
@@ -196,8 +190,7 @@ public class DAOFacturaSalidaImpl {
 		
 		List<FacturaSalida> lista;
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		/*Comprobar la insercion de las sentencias de lectura (las ? entre comillas?????)*/
-		String sql="select * from factura_s where fecha BETWEEN '?' AND '?';";
+		String sql="select * from factura_s where fecha BETWEEN ? AND ? order by fecha desc;";
 		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
 		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
 		lista=jdbc.query(sql,new Object[]{fi,ff},new FacturaSalidaRowMapper());

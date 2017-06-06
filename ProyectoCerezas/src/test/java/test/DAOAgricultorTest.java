@@ -38,6 +38,7 @@ public class DAOAgricultorTest extends TestCase {
 		assertEquals(a.getEmail(), u.getEmail());
 		assertEquals(a.getnSocio(),u.getnSocio());
 		assertEquals(a.isBaja(),u.isBaja());
+		
 		 
 	}
 	

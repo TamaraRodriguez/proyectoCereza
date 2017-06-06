@@ -145,7 +145,7 @@ public class DAOLineaAlbaranSalidaImpl implements DAOLineaAlbaranSalida{
 		List<LineaAlbaranSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from lineas_albaranes_s where n_albaran=?";
+		String sql="select * from lineas_albaranes_s where n_albaran=? order by id_linea desc";
 		lista=jdbc.query(sql,new Object[]{nAlbaran},new LineaAlbaranSalidaRowMapper());
 		return lista;
 	}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2017 a las 09:21:57
+-- Tiempo de generación: 05-06-2017 a las 14:24:07
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.1
 
@@ -34,6 +34,13 @@ CREATE TABLE `agricultores` (
   `id_persona` int(11) NOT NULL,
   `baja` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `agricultores`
+--
+
+INSERT INTO `agricultores` (`n_socio`, `id_persona`, `baja`) VALUES
+(1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -76,6 +83,13 @@ CREATE TABLE `clientes` (
   `baja` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`n_cliente`, `id_persona`, `baja`) VALUES
+(1, 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -84,7 +98,6 @@ CREATE TABLE `clientes` (
 
 DROP TABLE IF EXISTS `factura_e`;
 CREATE TABLE `factura_e` (
-  `precio_bruto` double(10,2) NOT NULL,
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL,
   `n_factura` int(11) NOT NULL,
@@ -100,7 +113,6 @@ CREATE TABLE `factura_e` (
 DROP TABLE IF EXISTS `factura_s`;
 CREATE TABLE `factura_s` (
   `n_factura` int(11) NOT NULL,
-  `precio_bruto` double(10,2) NOT NULL,
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL,
   `fecha` date NOT NULL
@@ -153,6 +165,13 @@ CREATE TABLE `personas` (
   `telefono` varchar(12) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `personas`
+--
+
+INSERT INTO `personas` (`id_persona`, `cif_nif`, `nombre_razon_social`, `apellidos`, `direccion`, `telefono`, `email`) VALUES
+(1, '123', 'prueba de insercion', 'asdg', 'direc', 'telef', '@');
 
 -- --------------------------------------------------------
 
@@ -251,32 +270,32 @@ ALTER TABLE `variedades`
 -- AUTO_INCREMENT de la tabla `agricultores`
 --
 ALTER TABLE `agricultores`
-  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_entrada`
 --
 ALTER TABLE `albaranes_entrada`
-  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_salida`
 --
 ALTER TABLE `albaranes_salida`
-  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `factura_e`
 --
 ALTER TABLE `factura_e`
-  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `factura_s`
 --
 ALTER TABLE `factura_s`
-  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `lineas_albaranes_e`
 --
@@ -291,7 +310,7 @@ ALTER TABLE `lineas_albaranes_s`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Restricciones para tablas volcadas
 --

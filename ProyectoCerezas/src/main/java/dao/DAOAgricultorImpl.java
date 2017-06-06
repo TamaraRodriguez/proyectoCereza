@@ -62,7 +62,8 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		final String sql="insert into personas (cif_nif, nombre_razon_social, apellidos, direccion, telefono, email) values (?,?,?,?,?,?)";
+		final String sql="insert into personas (cif_nif, nombre_razon_social, apellidos, direccion, telefono, email)"
+				+ " values (?,?,?,?,?,?)";
 		
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		int n = jdbc.update(new PreparedStatementCreator(){
@@ -100,9 +101,11 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		a.setnSocio(kh2.getKey().intValue());
 		return n>0 && m>0;		
 	}
-	/*******************************************************************************************************************/
+
 	/**
-	 * Tenemos que preguntar si al final vamos a buscar por número de socio o por dni.
+	 * Función que recupera un objeto Agricultor buscado por n_socio
+	 * @param n_socio
+	 * @return Agricultor c
 	 */
 	public Agricultor read(int n_socio){ //Busca agricultores por su número de socio, que es su propiedad diferenciadora de clientes.
 		Agricultor c=null;
@@ -132,9 +135,10 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		
 		String sql="select personas.*, agricultores.n_socio "
 				+ "from personas join agricultores on (personas.id_persona=agricultores.id_persona) "
-				+ "where cif_nif like ? or nombre_razon_social like ? or apellido like ? or telefono like ?";
+				+ "where cif_nif like ? or nombre_razon_social like ? or apellidos like ? or telefono like ?";
 		try{
-			lista=jdbc.query(sql,new Object[]{"%"+busqueda+"%"},new AgricultorRowMapper());
+			String b="%"+busqueda+"%";
+			lista=jdbc.query(sql,new Object[]{b,b,b,b},new AgricultorRowMapper());
 		}
 		catch(IncorrectResultSizeDataAccessException ics){
 			System.out.println("ArrayList <Agricultor> read - Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
@@ -146,7 +150,7 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 				
 		return lista;
 	}
-	/*REVISAR A PARTIR DE AQUÍ*/
+
 	/**
 	 * Función que modifica el objeto agricultor. El agricultor se busca por id_persona.
 	 * @param c
@@ -213,7 +217,7 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		boolean r=false;
 		
 		String sql="update agricultores set "
-				+ "baja=?, "
+				+ "baja=1, "
 				+ "where n_socio=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -221,7 +225,7 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		try{
 			int n=jdbc.update(
 					sql,
-					new Object[]{true,nSocio});
+					new Object[]{nSocio});
 							
 			r=n>0;
 		}
