@@ -12,7 +12,7 @@ public interface DAOAlbaranSalida {
 	public DataSource getDataSource();
 	public void setDataSource(DataSource dataSource);
 	/*CRUD*/
-	public int create(final AlbaranSalida a);
+	public boolean create(final AlbaranSalida a);
 	public AlbaranSalida read(int nAlbaran);
 	public boolean update(AlbaranSalida as);
 	public boolean facturar(int nAlbaran, int nFactura);

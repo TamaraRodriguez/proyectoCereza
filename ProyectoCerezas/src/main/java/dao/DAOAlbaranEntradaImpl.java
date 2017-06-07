@@ -22,10 +22,11 @@ import modelos.AlbaranEntrada;
 
 
 
-public class DAOAlbaranEntradaImpl {
+public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 	class AlbaranEntradaRowMapper implements RowMapper<AlbaranEntrada>{
 		
 		public AlbaranEntrada mapRow(ResultSet rs,int numRow) throws SQLException{
+					
 			AlbaranEntrada ae=new AlbaranEntrada(
 					rs.getInt("n_albaran"),
 					rs.getInt("n_socio"),
@@ -55,11 +56,11 @@ public class DAOAlbaranEntradaImpl {
 	 * @param a
 	 * @return nAlbaran
 	 */
-public int create(final AlbaranEntrada a){
-		int nAlbaran = -1;
+	public boolean create(final AlbaranEntrada a){
+		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		final String sql="insert into albaranes_entrada (n_albaran, n_socio, fecha, n_factura) values (?,?,?,?)";
+		final String sql="insert into albaranes_entrada (n_socio, fecha) values (?,?)";
 		
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(a.getFecha().getTime());
@@ -68,19 +69,17 @@ public int create(final AlbaranEntrada a){
 			
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-				statement.setInt(1, a.getnAlbaran());
-				statement.setInt(2,a.getnSocio());
-				statement.setDate(3, d);
-				statement.setInt(4,a.getnFactura());
+				statement.setInt(1,a.getnSocio());
+				statement.setDate(2, d);
 
 				return statement;
 			}
 				
 		},kh
 		);
-		nAlbaran = kh.getKey().intValue();
-		a.setnAlbaran(nAlbaran);
-		return nAlbaran;		
+		
+		a.setnAlbaran(kh.getKey().intValue());
+		return true;		
 	}
 	
 	
@@ -119,8 +118,7 @@ public int create(final AlbaranEntrada a){
 		
 		String sql="update albaranes_entrada set "
 					+ "n_socio=?, "
-					+ "fecha=?, "
-					+ "n_factura=? "
+					+ "fecha=? "
 				+ "where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -131,7 +129,6 @@ public int create(final AlbaranEntrada a){
 					new Object[]{
 							ae.getnSocio(),
 							new java.sql.Date(ae.getFecha().getTime()),
-							ae.getnFactura(),
 							ae.getnAlbaran()});
 			r=n>0;
 		}
@@ -156,7 +153,9 @@ public int create(final AlbaranEntrada a){
 				
 		boolean r=false;
 		
-		String sql="update albaranes_entrada set n_factura=? where n_albaran=?  and n_factura is null";
+		String sql="update albaranes_entrada set "
+					+ "n_factura=? "
+				+ "where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -256,10 +255,11 @@ public int create(final AlbaranEntrada a){
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		String sql="SELECT albaranes_entrada.n_albaran,albaranes_entrada.n_socio,"
-				+ "albaranes_entrada.fecha,albaranes_entrada.n_factura from albaranes_entrada"
-				+ " join agricultores on(agricultores.n_socio=albaranes_entrada.n_socio) JOIN "
-				+ "personas on (personas.id_persona=agricultores.id_persona)WHERE personas.cif_nif=?"
-				+ " and factura_e.n_factura is NULL;";
+				+ "albaranes_entrada.fecha,albaranes_entrada.n_factura "
+				+ "from albaranes_entrada "
+				+ " join agricultores on(agricultores.n_socio=albaranes_entrada.n_socio) "
+				+ "JOIN personas on (personas.id_persona=agricultores.id_persona)"
+				+ "WHERE personas.cif_nif=? and albaranes_entrada.n_factura is null";
 		lista=jdbc.query(sql,new Object[]{cifNif},new AlbaranEntradaRowMapper());
 		return lista;
 	}

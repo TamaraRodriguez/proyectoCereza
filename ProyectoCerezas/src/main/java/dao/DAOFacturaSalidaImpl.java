@@ -19,7 +19,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import com.mysql.jdbc.Statement;
 import modelos.FacturaSalida;
 
-public class DAOFacturaSalidaImpl {
+public class DAOFacturaSalidaImpl implements DAOFacturaSalida{
 	class FacturaSalidaRowMapper implements RowMapper<FacturaSalida> {
 
 		public FacturaSalida mapRow(ResultSet rs, int numRow) throws SQLException {

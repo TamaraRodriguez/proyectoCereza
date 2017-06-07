@@ -26,7 +26,7 @@ public class DAOClienteTest  extends TestCase {
 	@Test
 	public void testCreate(){
 		
-		Cliente a=new Cliente(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		
 		
 		Properties p=System.getProperties();
@@ -51,7 +51,7 @@ public class DAOClienteTest  extends TestCase {
 	@Test
 	public void testUpdate(){
 		
-		Cliente a=new Cliente(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente a=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
 		
 		//System.out.println("El numero de socio ahora es: " + a.getnSocio());
@@ -77,9 +77,9 @@ public class DAOClienteTest  extends TestCase {
 	@Test
 	public void testRead(){
 		
-		Cliente a=new Cliente(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
-		Cliente b=new Cliente(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente b=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(b);
 		
 		List<Cliente> lista = dao.listar("689526341");
@@ -93,9 +93,9 @@ public class DAOClienteTest  extends TestCase {
 	@Test
 	public void testListar(){
 		
-		Cliente a=new Cliente(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
-		Cliente b=new Cliente(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Cliente b=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(b);
 		
 		b.setBaja(true);

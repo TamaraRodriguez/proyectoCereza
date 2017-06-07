@@ -26,7 +26,7 @@ public class DAOAgricultorTest extends TestCase {
 	@Test
 	public void testCreate(){
 		
-		Agricultor a=new Agricultor(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		
 		
 		Properties p=System.getProperties();
@@ -51,7 +51,7 @@ public class DAOAgricultorTest extends TestCase {
 	@Test
 	public void testUpdate(){
 		
-		Agricultor a=new Agricultor(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor a=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
 		
 		//System.out.println("El numero de socio ahora es: " + a.getnSocio());
@@ -77,9 +77,9 @@ public class DAOAgricultorTest extends TestCase {
 	@Test
 	public void testRead(){
 		
-		Agricultor a=new Agricultor(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
-		Agricultor b=new Agricultor(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor b=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(b);
 		
 		List<Agricultor> lista = dao.listar("689526341");
@@ -93,9 +93,9 @@ public class DAOAgricultorTest extends TestCase {
 	@Test
 	public void testListar(){
 		
-		Agricultor a=new Agricultor(5, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(a);
-		Agricultor b=new Agricultor(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Agricultor b=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(b);
 		
 		b.setBaja(true);

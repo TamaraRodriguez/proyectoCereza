@@ -20,7 +20,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import modelos.AlbaranSalida;
 
 
-public class DAOAlbaranSalidaImpl {
+public class DAOAlbaranSalidaImpl implements DAOAlbaranSalida{
 class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		
 		public AlbaranSalida mapRow(ResultSet rs,int numRow) throws SQLException{
@@ -52,11 +52,10 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 	 * @param a
 	 * @return nAlbaran
 	 */
-	public int create(final AlbaranSalida a){
-		int nAlbaran = -1;
+	public boolean create(final AlbaranSalida a){
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		final String sql="insert into albaranes_salida (n_albaran, n_cliente, fecha, n_factura) values (?,?,?,?)";
+		final String sql="insert into albaranes_salida (n_cliente, fecha) values (?,?)";
 		
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(a.getFecha().getTime());
@@ -65,19 +64,17 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-				statement.setInt(1, a.getnAlbaran());
 				statement.setInt(2,a.getnCliente());
 				statement.setDate(3, d);
-				statement.setInt(4,a.getnFactura());
 
 				return statement;
 			}
 				
 		},kh
 		);
-		nAlbaran = kh.getKey().intValue();
-		a.setnAlbaran(nAlbaran);
-		return nAlbaran;		
+		
+		a.setnAlbaran(kh.getKey().intValue());
+		return true;		
 	}
 	
 	
@@ -116,8 +113,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		
 		String sql="update albaranes_salida set "
 					+ "n_cliente=?, "
-					+ "fecha=?,"
-					+ "n_factura=? "
+					+ "fecha=? "
 				+ "where n_albaran=? and n_factura is null";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -128,7 +124,6 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 					new Object[]{
 							as.getnCliente(),
 							new java.sql.Date(as.getFecha().getTime()),
-							as.getnFactura(),
 							as.getnAlbaran()});
 			r=n>0;
 		}
