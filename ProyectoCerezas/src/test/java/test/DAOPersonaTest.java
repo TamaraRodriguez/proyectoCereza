@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dao.DAOPersona;
 import junit.framework.TestCase;
-import modelos.Agricultor;
 import modelos.Persona;
 
 @RunWith(SpringJUnit4ClassRunner.class)

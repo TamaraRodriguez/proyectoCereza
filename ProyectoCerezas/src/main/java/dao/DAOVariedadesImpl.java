@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import modelos.Variedades;
 
+
+
 public class DAOVariedadesImpl implements DAOVariedades {
 	
 	/**
@@ -163,6 +165,30 @@ public class DAOVariedadesImpl implements DAOVariedades {
 		int n=jdbc.update(sql,new Object[]{tipo});
 
 		return n>0;
+	}
+
+	
+	public List<Variedades> listar(String busqueda){  
+
+		List<Variedades> lista=null;
+		
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		String sql= "select variedades.* from variedades where tipo like ?";
+		try{
+			String b="%"+busqueda+"%";
+			lista=jdbc.query(sql,new Object[]{b},new  VariedadesRowMapper());
+		}
+		catch(IncorrectResultSizeDataAccessException ics){
+			System.out.println("ArrayList <Variedades> listar - Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("ArrayList <Variedades> listar - Error acceso de datos");
+		}
+				
+		return lista;
+	
 	}
 	
 }

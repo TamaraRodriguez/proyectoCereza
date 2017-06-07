@@ -82,7 +82,7 @@ public class DAOClienteTest  extends TestCase {
 		Cliente b=new Cliente(6, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		dao.create(b);
 		
-		List<Cliente> lista = dao.read("689526341");
+		List<Cliente> lista = dao.listar("689526341");
 		assertTrue(lista.size()>0);
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		

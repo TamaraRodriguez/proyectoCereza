@@ -49,7 +49,8 @@ public class DAOPersonaImpl implements DAOPersona {
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		final String sql="insert into personas (cif_nif, nombre_razon_social, apellidos, direccion, telefono, email) values (?,?,?,?,?,?)";
+		final String sql="insert into personas (cif_nif, nombre_razon_social, apellidos, direccion, telefono, email)"
+				+ " values (?,?,?,?,?,?)";
 		
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		int n = jdbc.update(new PreparedStatementCreator(){
