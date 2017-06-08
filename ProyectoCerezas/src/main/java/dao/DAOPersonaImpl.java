@@ -95,4 +95,20 @@ public class DAOPersonaImpl implements DAOPersona {
 		return p;
 	}
 	
+	/**
+	 * Metdodo para borrar una persona "OJO:Solo se usa en los JUnit"
+	 * @param idPersona
+	 * @return
+	 */
+	public boolean delete(int idPersona){ 
+		
+		String sql="delete from personas where id_persona=? ";
+		
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		int n=jdbc.update(sql,new Object[]{idPersona});
+
+		return n>0;
+	}
+	
 }

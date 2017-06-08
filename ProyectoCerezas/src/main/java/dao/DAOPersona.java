@@ -10,6 +10,7 @@ public interface DAOPersona {
 	/*CRUD*/
 	public boolean create(Persona p);
 	public Persona read(String cifNif);
+	public boolean delete(int idPersona); // Borrar se usa en JUnit
 	
 }
 

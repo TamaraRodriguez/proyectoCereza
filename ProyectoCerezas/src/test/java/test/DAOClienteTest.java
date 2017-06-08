@@ -10,8 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dao.DAOCliente;
+import dao.DAOPersona;
 import junit.framework.TestCase;
 import modelos.Cliente;
+import modelos.Persona;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:Spring-Beans.xml"})
@@ -20,13 +22,18 @@ public class DAOClienteTest  extends TestCase {
 	@Autowired
 	DAOCliente dao;
 	
-	
+	@Autowired
+	DAOPersona daop;
 	
 	
 	@Test
 	public void testCreate(){
 		
-		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		
+		
+		Cliente a=new Cliente(per.getIdPersona(), "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
 		
 		
 		Properties p=System.getProperties();
@@ -44,19 +51,22 @@ public class DAOClienteTest  extends TestCase {
 		assertEquals(a.getnSocio(),u.getnSocio());
 		assertEquals(a.isBaja(),u.isBaja());
 		
-		dao.delete(a.getnSocio());
-		 
+		dao.delete(a.getnCliente());
+		dao.delete(per.getIdPersona());
+		  
 	}
 	
 	@Test
 	public void testUpdate(){
 		
-		Cliente a=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		Cliente a=new Cliente(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
 		
 		//System.out.println("El numero de socio ahora es: " + a.getnSocio());
 		
-		Cliente u=new Cliente(a.getIdPersona(), "B45264589", "Perico s.a", null, "Madrid", "689516341", "cerezas@gmail.com", a.getnSocio(), false);
+		Cliente u=new Cliente(a.getIdPersona(), "B45263312", "Perico s.a", null, "Madrid", "689516341", "cerezas@gmail.com", a.getnCliente(), false);
 		dao.update(u);
 		
 		Cliente v=dao.read(u.getIdPersona());
@@ -70,32 +80,44 @@ public class DAOClienteTest  extends TestCase {
 		assertEquals(v.getnSocio(),u.getnSocio());
 		assertEquals(v.isBaja(),u.isBaja());
 		
-		dao.update(a);
-		dao.delete(a.getnSocio());
+		dao.delete(a.getnCliente());
+		dao.delete(per.getIdPersona());
 	} 
 
 	@Test
 	public void testRead(){
 		
-		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		Cliente a=new Cliente(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
-		Cliente b=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		
+		Persona per2=new Persona(-1,  "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per2);
+		Cliente b=new Cliente(per2.getIdPersona(), per2.getCifNif(), per2.getNombreRazonSocial(), per2.getApellidos(), per2.getDireccion(), per2.getTelefono(), per2.getEmail(), -1, false);
 		dao.create(b);
 		
 		List<Cliente> lista = dao.listar("689526341");
 		assertTrue(lista.size()>0);
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
-		dao.delete(a.getnSocio());
-		dao.delete(b.getnSocio());
+		dao.delete(a.getnCliente());
+		dao.delete(per.getIdPersona());
+		dao.delete(b.getnCliente());
+		dao.delete(per2.getIdPersona());
 	}
 	
 	@Test
 	public void testListar(){
 		
-		Cliente a=new Cliente(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		Cliente a=new Cliente(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
-		Cliente b=new Cliente(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		
+		Persona per2=new Persona(-1,  "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per2);
+		Cliente b=new Cliente(per2.getIdPersona(), per2.getCifNif(), per2.getNombreRazonSocial(), per2.getApellidos(), per2.getDireccion(), per2.getTelefono(), per2.getEmail(), -1, false);
 		dao.create(b);
 		
 		b.setBaja(true);
@@ -106,7 +128,9 @@ public class DAOClienteTest  extends TestCase {
 		assertTrue(lista.size()>0);
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
-		dao.delete(a.getnSocio());
-		dao.delete(b.getnSocio());
+		dao.delete(a.getnCliente());
+		dao.delete(per.getIdPersona());
+		dao.delete(b.getnCliente());
+		dao.delete(per2.getIdPersona());
 	}
 }

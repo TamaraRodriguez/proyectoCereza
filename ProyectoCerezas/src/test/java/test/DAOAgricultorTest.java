@@ -10,8 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dao.DAOAgricultor;
+import dao.DAOPersona;
 import junit.framework.TestCase;
 import modelos.Agricultor;
+import modelos.Persona;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:Spring-Beans.xml"})
@@ -20,14 +22,18 @@ public class DAOAgricultorTest extends TestCase {
 	@Autowired
 	DAOAgricultor dao;
 	
-	
+	@Autowired
+	DAOPersona daop;
 	
 	
 	@Test
 	public void testCreate(){
 		
-		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
 		
+		Agricultor a=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
+		dao.create(a);
 		
 		Properties p=System.getProperties();
 		System.out.println(p.getProperty("java.class.path"));
@@ -45,21 +51,25 @@ public class DAOAgricultorTest extends TestCase {
 		assertEquals(a.isBaja(),u.isBaja());
 		
 		dao.delete(a.getnSocio());
+		dao.delete(per.getIdPersona());
 		 
 	}
 	
 	@Test
 	public void testUpdate(){
 		
-		Agricultor a=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		
+		Agricultor a=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
 		
 		//System.out.println("El numero de socio ahora es: " + a.getnSocio());
 		
-		Agricultor u=new Agricultor(a.getIdPersona(), "B45264589", "Perico s.a", null, "Madrid", "689516341", "cerezas@gmail.com", a.getnSocio(), false);
+		Agricultor u=new Agricultor(a.getIdPersona(), "B45263312", "Perico s.a", null, "Madrid", "689516341", "cerezas@gmail.com", a.getnSocio(), false);
 		dao.update(u);
 		
-		Agricultor v=dao.read(u.getIdPersona());
+		Agricultor v=dao.read(a.getIdPersona());
 		
 		assertEquals(v.getCifNif(),u.getCifNif());
 		assertEquals(v.getNombreRazonSocial(),u.getNombreRazonSocial());
@@ -70,16 +80,21 @@ public class DAOAgricultorTest extends TestCase {
 		assertEquals(v.getnSocio(),u.getnSocio());
 		assertEquals(v.isBaja(),u.isBaja());
 		
-		dao.update(a);
 		dao.delete(a.getnSocio());
+		dao.delete(per.getIdPersona());
 	} 
 
 	@Test
 	public void testRead(){
 		
-		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		Agricultor a=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
-		Agricultor b=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		
+		Persona per2=new Persona(-1,  "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per2);
+		Agricultor b=new Agricultor(per2.getIdPersona(), per2.getCifNif(), per2.getNombreRazonSocial(), per2.getApellidos(), per2.getDireccion(), per2.getTelefono(), per2.getEmail(), -1, false);
 		dao.create(b);
 		
 		List<Agricultor> lista = dao.listar("689526341");
@@ -87,15 +102,22 @@ public class DAOAgricultorTest extends TestCase {
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
 		dao.delete(a.getnSocio());
+		dao.delete(per.getIdPersona());
 		dao.delete(b.getnSocio());
+		dao.delete(per2.getIdPersona());
 	}
 	
 	@Test
 	public void testListar(){
 		
-		Agricultor a=new Agricultor(2, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per);
+		Agricultor a=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
-		Agricultor b=new Agricultor(3, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com", -1, false);
+		
+		Persona per2=new Persona(-1,  "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
+		daop.create(per2);
+		Agricultor b=new Agricultor(per2.getIdPersona(), per2.getCifNif(), per2.getNombreRazonSocial(), per2.getApellidos(), per2.getDireccion(), per2.getTelefono(), per2.getEmail(), -1, false);
 		dao.create(b);
 		
 		b.setBaja(true);
@@ -107,9 +129,10 @@ public class DAOAgricultorTest extends TestCase {
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
 		dao.delete(a.getnSocio());
+		dao.delete(per.getIdPersona());
 		dao.delete(b.getnSocio());
+		dao.delete(per2.getIdPersona());
 	}
-	
 	
 	
 }

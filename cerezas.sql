@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2017 a las 14:24:07
+-- Tiempo de generación: 07-06-2017 a las 10:28:31
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.1
 
@@ -101,7 +101,8 @@ CREATE TABLE `factura_e` (
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL,
   `n_factura` int(11) NOT NULL,
-  `fecha` date NOT NULL
+  `fecha` date NOT NULL,
+  `anulacion` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -115,7 +116,8 @@ CREATE TABLE `factura_s` (
   `n_factura` int(11) NOT NULL,
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL,
-  `fecha` date NOT NULL
+  `fecha` date NOT NULL,
+  `anulacion` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -340,20 +342,6 @@ ALTER TABLE `albaranes_salida`
 --
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id_persona`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `lineas_albaranes_e`
---
-ALTER TABLE `lineas_albaranes_e`
-  ADD CONSTRAINT `lineas_albaranes_e_ibfk_1` FOREIGN KEY (`n_albaran`) REFERENCES `albaranes_entrada` (`n_albaran`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lineas_albaranes_e_variedades` FOREIGN KEY (`tipo`) REFERENCES `variedades` (`tipo`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `lineas_albaranes_s`
---
-ALTER TABLE `lineas_albaranes_s`
-  ADD CONSTRAINT `lineas_albaranes_s_ibfk_1` FOREIGN KEY (`n_albaran`) REFERENCES `albaranes_salida` (`n_albaran`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `lineas_albaranes_s_variedades` FOREIGN KEY (`tipo`) REFERENCES `variedades` (`tipo`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

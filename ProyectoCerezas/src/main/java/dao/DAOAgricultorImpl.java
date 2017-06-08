@@ -277,7 +277,7 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 	}
 	
 	/**
-	 * Metodo para borrar un agricultor "OJO:Solo se usa para los test"
+	 * Metodo para borrar un agricultor "OJO:Solo se usa para los JUnit"
 	 * @param nSocio
 	 * @return
 	 */

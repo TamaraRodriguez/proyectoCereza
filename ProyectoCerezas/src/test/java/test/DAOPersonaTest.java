@@ -23,12 +23,10 @@ public class DAOPersonaTest extends TestCase {
 	public void testCreate(){
 		
 		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
-		Persona p2=new Persona(-1, "B45264589", "Peras S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
 				
 		Properties p=System.getProperties();
 		System.out.println(p.getProperty("java.class.path"));
 		dao.create(per);
-		dao.create(p2);
 		
 		Persona u=dao.read(per.getCifNif());
 		
@@ -38,7 +36,9 @@ public class DAOPersonaTest extends TestCase {
 		assertEquals(per.getDireccion(),u.getDireccion());
 		assertEquals(per.getTelefono(), u.getTelefono());
 		assertEquals(per.getEmail(), u.getEmail());
-		 
+		
+		dao.delete(per.getIdPersona());
+		
 	}
 
 }
