@@ -12,6 +12,7 @@ public class FacturaSalida {
 	private Date fecha;
 	private int iva;
 	private double precioNeto;
+	private boolean anulacion;
 	
 	/**
 	 * CONSTRUCTOR VACÍO
@@ -24,11 +25,12 @@ public class FacturaSalida {
 	 * @param iva
 	 * @param precioNeto
 	 */
-	public FacturaSalida(int nFactura, Date fecha, int iva, double precioNeto){
+	public FacturaSalida(int nFactura, Date fecha, int iva, double precioNeto, boolean anulacion){
 		this.nFactura = nFactura;
 		this.fecha=fecha;
 		this.iva = iva;
 		this.precioNeto = precioNeto;
+		this.anulacion=anulacion;
 	}
 	/**
 	 * GETTERS Y SETTERS
@@ -66,6 +68,11 @@ public class FacturaSalida {
 	public void setnFactura (int nFactura) {
 		this.nFactura = nFactura;
 	}
-	
+	public boolean isAnulacion() {
+		return anulacion;
+	}
+	public void setAnulacion(boolean anulacion) {
+		this.anulacion = anulacion;
+	}
 	
 }

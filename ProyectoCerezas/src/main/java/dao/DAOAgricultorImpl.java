@@ -256,7 +256,7 @@ class AgricultorRowMapper implements RowMapper<Agricultor>{
 		boolean r=false;
 		
 		String sql="update agricultores set "
-				+ "baja=?  "
+					+ "baja=?  "
 				+ "where n_socio=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);

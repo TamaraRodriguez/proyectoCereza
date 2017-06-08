@@ -65,7 +65,7 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(a.getFecha().getTime());
 		
-		jdbc.update(new PreparedStatementCreator(){
+		int n=jdbc.update(new PreparedStatementCreator(){
 			
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -79,7 +79,7 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 		);
 		
 		a.setnAlbaran(kh.getKey().intValue());
-		return true;		
+		return n>0;		
 	}
 	
 	
@@ -228,19 +228,15 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 	 * @return lista
 	 */
 	public List<AlbaranEntrada> buscarFecha (Date fechaInicio, Date fechaFinal){
-		
+		//System.out.println(fechaInicio +" "+ fechaFinal);
 		List<AlbaranEntrada> lista;
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from albaranes_entrada where fecha BETWEEN ? AND ?;";
+		String sql="select * from albaranes_entrada where fecha BETWEEN ? AND ? order by fecha desc";
 		java.sql.Date fi=new java.sql.Date(fechaInicio.getTime());
 		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
 		lista=jdbc.query(sql,new Object[]{fi,ff},new AlbaranEntradaRowMapper());
 		return lista;
 	}
-	
-	
-	
-	
 	
 	
 	/**
@@ -264,6 +260,7 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 		return lista;
 	}
 	
+	
 	/**
 	 * Borra un albaran, hay que controlar que sea un albarán que nFactura sea nulo, es decir, que no esté facturado
 	 * @param nAlbaran
@@ -278,7 +275,5 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 
 		return n>0;
 	}
-	
-	
 	
 }

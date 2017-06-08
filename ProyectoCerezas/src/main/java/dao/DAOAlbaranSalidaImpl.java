@@ -60,12 +60,12 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		GeneratedKeyHolder kh=new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(a.getFecha().getTime());
 		
-		jdbc.update(new PreparedStatementCreator(){
+		int n=jdbc.update(new PreparedStatementCreator(){
 
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-				statement.setInt(2,a.getnCliente());
-				statement.setDate(3, d);
+				statement.setInt(1,a.getnCliente());
+				statement.setDate(2, d);
 
 				return statement;
 			}
@@ -74,7 +74,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		);
 		
 		a.setnAlbaran(kh.getKey().intValue());
-		return true;		
+		return n>0;		
 	}
 	
 	

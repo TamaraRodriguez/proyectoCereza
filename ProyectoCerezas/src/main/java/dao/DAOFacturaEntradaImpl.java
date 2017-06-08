@@ -24,9 +24,12 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 	class FacturaEntradaRowMapper implements RowMapper<FacturaEntrada> {
 
 		public FacturaEntrada mapRow(ResultSet rs, int numRow) throws SQLException {
-			FacturaEntrada fe = new FacturaEntrada(rs.getInt("n_factura"),
-					new java.util.Date(rs.getDate("fecha").getTime()), rs.getInt("iva"),
-					rs.getDouble("precio_neto"));
+			FacturaEntrada fe = new FacturaEntrada(
+					rs.getInt("n_factura"),
+					new java.util.Date(rs.getDate("fecha").getTime()), 
+					rs.getInt("iva"),
+					rs.getDouble("precio_neto"),
+					rs.getBoolean("anulacion"));
 
 			return fe;
 		}
@@ -50,8 +53,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 	 * @param fe -- Objeto FacturaEntrada
 	 * @return nFactura
 	 */
-	public int create(final FacturaEntrada fe) {
-		int nFactura = -1;
+	public boolean create(final FacturaEntrada fe) {
 		
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
 
@@ -59,7 +61,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 
 		GeneratedKeyHolder kh = new GeneratedKeyHolder();
 		final java.sql.Date d = new java.sql.Date(fe.getFecha().getTime());
-		jdbc.update(new PreparedStatementCreator() {
+		int n = jdbc.update(new PreparedStatementCreator() {
 
 			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -70,9 +72,9 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 			}
 		}, kh);
 		
-		nFactura = kh.getKey().intValue();
-		fe.setnFactura(nFactura);
-		return nFactura;
+		
+		fe.setnFactura(kh.getKey().intValue());
+		return n>0;
 	}
 
 	public FacturaEntrada read(int nFactura) {
@@ -97,7 +99,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 	/*****************************************************************************************************************************/
 	/* Al final que hacemos ¿Modificamos la factura? Y si la modicamos, ¿Qué campos tocamos?*/
 	/**
-	 * Función que modifica el objeto FacturaEntrada. 
+	 * Función que modifica el objeto FacturaEntrada siempre que no esté anulada. 
 	 * @param fe -- Se introduce un FacturaEntrada
 	 * @return r -- Devuelve un boolean que determina si la función se ha ejecutado correctamente o no.
 	 */
@@ -108,7 +110,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 					+ "fecha=?, "	
 					+ "iva=?, "
 					+ "precio_neto=? "
-				+ "where n_factura=?";
+				+ "where n_factura=? and anulacion=0";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
@@ -132,20 +134,22 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 	}
 	
 	/**
-	 * Creamos una función que devuelve una lista con todos las facturas de entrada.
+	 * Creamos una función que devuelve una lista con todos las facturas de entrada 
+	 * no anuladas.
 	 * @return lista
 	 */
 	public List<FacturaEntrada> listar() {
 		List<FacturaEntrada> lista = null;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from factura_e order by fecha desc";
+		String sql="select * from factura_e where anulacion=0 order by fecha desc";
 		lista=jdbc.query(sql,new FacturaEntradaRowMapper());
 		return lista;
 	}
 	
 	/**
 	 * Función sobrecargada que devuelve una lista con todos las facturas de entrada.
+	 * anuladas y no anuladas
 	 * Sql by laura y marco
 	 * @param cifNif
 	 * @return lista
@@ -157,7 +161,8 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 		String sql="SELECT factura_e.precio_neto,"
 				+ "factura_e.iva, "
 				+ "factura_e.n_factura,"
-				+ "factura_e.fecha "
+				+ "factura_e.fecha,"
+				+ "factura_e.anulacion "
 				+ "from factura_e "
 					+ "join albaranes_entrada on(factura_e.n_factura=albaranes_entrada.n_factura) "
 					+ "join agricultores on (agricultores.n_socio=albaranes_entrada.n_socio) "
@@ -178,20 +183,11 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 		return lista;
 	}
 	*/
-	/*****************************************************************************************************************************/
-	/*Creo que hablamos que no se podía eliminar una factura.
-	 Hariamos un método que nos anulara la factura.*/
-	/*public boolean delete(int nFactura) {
-		String sql="delete from albaranes_entrada where n_albaran=? and n_factura is NULL";
 		
-		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		int n=jdbc.update(sql,new Object[]{nFactura});
-
-		return n>0;
-	}*/
 	/**
 	 * Función para acotar la fecha de busqueda
+	 * anuladas y no anuladas
 	 * @param fechaInicio
 	 * @param fechaFinal
 	 * @return lista
@@ -206,5 +202,53 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 		java.sql.Date ff=new java.sql.Date(fechaFinal.getTime());
 		lista=jdbc.query(sql,new Object[]{fi,ff},new FacturaEntradaRowMapper());
 		return lista;
+	}
+	
+	/**
+	 * Metodo anularFactrura, recibe una factura y pone anulacion a true.
+	 * @param FactruraEntrada fe
+	 * @return true o false
+	 */
+	
+	public boolean anularFactura(FacturaEntrada fe){
+		boolean r=false;
+		
+		String sql="update factura_e set "
+					+ "anulacion=1 "
+				+ "where n_factura=?";
+		
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		try{
+			int n=jdbc.update(
+					sql,
+					new Object[]{fe.getnFactura()});
+							
+			r=n>0;
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("Baja - Error acceso de datos");
+		}
+		
+		return r;
+				
+	}
+	
+	
+	/**
+	 * Metodo borrar factura, Borra una factura y pone a null todos los albaranes que tuviera esa factura.
+	 * OJO: Se usa sólo para los JUnit. Las facturas no se pueden borrar, solo modificar el estado
+	 */
+	
+	public boolean delete(int nFactura) {
+		
+		String sql="delete from factura_e where n_factura=?";
+		
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		int n=jdbc.update(sql,new Object[]{nFactura});
+
+		return n>0;
 	}
 }

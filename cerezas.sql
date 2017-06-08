@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-06-2017 a las 10:28:31
+-- Tiempo de generación: 08-06-2017 a las 11:44:13
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.1
 
@@ -34,13 +34,6 @@ CREATE TABLE `agricultores` (
   `id_persona` int(11) NOT NULL,
   `baja` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `agricultores`
---
-
-INSERT INTO `agricultores` (`n_socio`, `id_persona`, `baja`) VALUES
-(1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -83,13 +76,6 @@ CREATE TABLE `clientes` (
   `baja` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `clientes`
---
-
-INSERT INTO `clientes` (`n_cliente`, `id_persona`, `baja`) VALUES
-(1, 1, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -102,7 +88,7 @@ CREATE TABLE `factura_e` (
   `precio_neto` double(10,2) NOT NULL,
   `n_factura` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `anulacion` tinyint(1) NOT NULL
+  `anulacion` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -167,13 +153,6 @@ CREATE TABLE `personas` (
   `telefono` varchar(12) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `personas`
---
-
-INSERT INTO `personas` (`id_persona`, `cif_nif`, `nombre_razon_social`, `apellidos`, `direccion`, `telefono`, `email`) VALUES
-(1, '123', 'prueba de insercion', 'asdg', 'direc', 'telef', '@');
 
 -- --------------------------------------------------------
 
@@ -272,12 +251,12 @@ ALTER TABLE `variedades`
 -- AUTO_INCREMENT de la tabla `agricultores`
 --
 ALTER TABLE `agricultores`
-  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_entrada`
 --
 ALTER TABLE `albaranes_entrada`
-  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_salida`
 --
@@ -287,12 +266,12 @@ ALTER TABLE `albaranes_salida`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 --
 -- AUTO_INCREMENT de la tabla `factura_e`
 --
 ALTER TABLE `factura_e`
-  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `factura_s`
 --
@@ -312,7 +291,7 @@ ALTER TABLE `lineas_albaranes_s`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
 --
 -- Restricciones para tablas volcadas
 --
@@ -327,8 +306,8 @@ ALTER TABLE `agricultores`
 -- Filtros para la tabla `albaranes_entrada`
 --
 ALTER TABLE `albaranes_entrada`
-  ADD CONSTRAINT `fk_albaranes_entrada_agricultores` FOREIGN KEY (`n_socio`) REFERENCES `agricultores` (`n_socio`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_albaranes_entrada_factura` FOREIGN KEY (`n_factura`) REFERENCES `factura_e` (`n_factura`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `albaranes_entrada_ibfk_1` FOREIGN KEY (`n_factura`) REFERENCES `factura_e` (`n_factura`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_albaranes_entrada_agricultores` FOREIGN KEY (`n_socio`) REFERENCES `agricultores` (`n_socio`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `albaranes_salida`
@@ -342,6 +321,20 @@ ALTER TABLE `albaranes_salida`
 --
 ALTER TABLE `clientes`
   ADD CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id_persona`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `lineas_albaranes_e`
+--
+ALTER TABLE `lineas_albaranes_e`
+  ADD CONSTRAINT `lineas_albaranes_e_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `variedades` (`tipo`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `lineas_albaranes_e_ibfk_2` FOREIGN KEY (`n_albaran`) REFERENCES `albaranes_entrada` (`n_albaran`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `lineas_albaranes_s`
+--
+ALTER TABLE `lineas_albaranes_s`
+  ADD CONSTRAINT `lineas_albaranes_s_ibfk_1` FOREIGN KEY (`tipo`) REFERENCES `variedades` (`tipo`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `lineas_albaranes_s_ibfk_2` FOREIGN KEY (`n_albaran`) REFERENCES `albaranes_salida` (`n_albaran`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

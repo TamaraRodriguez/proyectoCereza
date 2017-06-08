@@ -29,16 +29,15 @@ public class DAOAgricultorTest extends TestCase {
 	@Test
 	public void testCreate(){
 		
+		Properties p=System.getProperties();
+		System.out.println(p.getProperty("java.class.path"));
+		
 		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
 		daop.create(per);
 		
 		Agricultor a=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		dao.create(a);
-		
-		Properties p=System.getProperties();
-		System.out.println(p.getProperty("java.class.path"));
-		dao.create(a);
-		
+				
 		Agricultor u=dao.read(a.getIdPersona());
 		
 		assertEquals(a.getCifNif(),u.getCifNif());
@@ -51,7 +50,7 @@ public class DAOAgricultorTest extends TestCase {
 		assertEquals(a.isBaja(),u.isBaja());
 		
 		dao.delete(a.getnSocio());
-		dao.delete(per.getIdPersona());
+		daop.delete(per.getIdPersona());
 		 
 	}
 	
@@ -81,7 +80,7 @@ public class DAOAgricultorTest extends TestCase {
 		assertEquals(v.isBaja(),u.isBaja());
 		
 		dao.delete(a.getnSocio());
-		dao.delete(per.getIdPersona());
+		daop.delete(per.getIdPersona());
 	} 
 
 	@Test
@@ -102,9 +101,9 @@ public class DAOAgricultorTest extends TestCase {
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
 		dao.delete(a.getnSocio());
-		dao.delete(per.getIdPersona());
+		daop.delete(per.getIdPersona());
 		dao.delete(b.getnSocio());
-		dao.delete(per2.getIdPersona());
+		daop.delete(per2.getIdPersona());
 	}
 	
 	@Test
@@ -129,9 +128,9 @@ public class DAOAgricultorTest extends TestCase {
 		//System.out.println("La lista tiene " + lista.size() + " elementos.");
 		
 		dao.delete(a.getnSocio());
-		dao.delete(per.getIdPersona());
+		daop.delete(per.getIdPersona());
 		dao.delete(b.getnSocio());
-		dao.delete(per2.getIdPersona());
+		daop.delete(per2.getIdPersona());
 	}
 	
 	
