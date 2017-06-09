@@ -1,7 +1,10 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -9,7 +12,9 @@ import javax.sql.DataSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 
 import modelos.LineaAlbaranEntrada;
 
@@ -51,20 +56,31 @@ public class DAOLineaAlbaranEntradaImpl implements DAOLineaAlbaranEntrada{
 	 * @param LineaAlbaranEntrada
 	 * @return true o false
 	 */
-	public boolean create(LineaAlbaranEntrada lae){
+	public boolean create(final LineaAlbaranEntrada lae){
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 				
-		String sql="insert into lineas_albaranes_e (n_albaran,tipo,peso,precio_kg)"
+		final String sql="insert into lineas_albaranes_e (n_albaran,tipo,peso,precio_kg)"
 				+ "values (?,?,?,?)";
 
-		int n = jdbc.update(
-			sql, new Object[]{
-					lae.getnAlbaran(),
-					lae.getTipo(),
-					lae.getPeso(),
-					lae.getPrecioKg()});
-					
+		GeneratedKeyHolder kh=new GeneratedKeyHolder();
+		
+		int n=jdbc.update(new PreparedStatementCreator(){
+
+			public java.sql.PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement statement =con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+				statement.setInt(1,lae.getnAlbaran());
+				statement.setString(2,lae.getTipo());
+				statement.setDouble(3,lae.getPeso());
+				statement.setDouble(4,lae.getPrecioKg());
+				
+				return statement;
+			}
+				
+		},kh
+		);
+		
+		lae.setIdLinea(kh.getKey().intValue());
 		return n>0;		
 	}
 	
@@ -107,7 +123,7 @@ public class DAOLineaAlbaranEntradaImpl implements DAOLineaAlbaranEntrada{
 					+ "n_albaran=?,"
 					+ "tipo=?,"
 					+ "peso=?,"
-					+ "precio_kg=?"
+					+ "precio_kg=? "
 				+ "where id_linea_e=?";
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
@@ -119,7 +135,8 @@ public class DAOLineaAlbaranEntradaImpl implements DAOLineaAlbaranEntrada{
 							lae.getnAlbaran(),
 							lae.getTipo(),
 							lae.getPeso(),
-							lae.getPrecioKg()});
+							lae.getPrecioKg(),
+							lae.getIdLinea()});
 			r=n>0;
 		}
 		catch(DataAccessException dae){

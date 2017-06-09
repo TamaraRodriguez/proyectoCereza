@@ -12,7 +12,7 @@ public interface DAOLineaAlbaranSalida {
 	public DataSource getDataSource();
 	public void setDataSource(DataSource dataSource);
 	/*CRUD y listar*/
-	public boolean create(LineaAlbaranSalida lae);
+	public boolean create(final LineaAlbaranSalida lae);
 	public LineaAlbaranSalida read(int idLinea);
 	public boolean update(LineaAlbaranSalida lae);
 	public List<LineaAlbaranSalida> listar(int nAlbaran);

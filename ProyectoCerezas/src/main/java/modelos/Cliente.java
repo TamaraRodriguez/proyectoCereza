@@ -11,11 +11,11 @@ public class Cliente extends Persona {
 	 * CONSTRUCTORES
 	 */
 	public Cliente (){}
+
 	/*Este constructor lo tenemos para crear cliente*/
 	public Cliente (String cifNif, String nombreRazonSocial, String apellidos, 
 			String direccion, String telefono, String email){
 		super (cifNif, nombreRazonSocial, apellidos, direccion, telefono, email);
-		this.nCliente = -1;
 		this.baja = false;
 	}
 	/*Este constructor lo usamos para recuperar clientes en el RowMapper*/
@@ -25,6 +25,14 @@ public class Cliente extends Persona {
 		this.nCliente = nCliente;
 		this.baja = baja;
 	}
+	/**
+	 *Constructor nuevo 
+	 */
+	public Cliente (int idPersona, boolean baja){
+		super(idPersona);
+		this.baja = baja;
+	}
+	
 	/**
 	 * GETTERS AND SETTERS
 	 */
@@ -43,5 +51,5 @@ public class Cliente extends Persona {
 	public void setBaja(boolean baja) {
 		this.baja = baja;
 	}
-	
+ 
 }

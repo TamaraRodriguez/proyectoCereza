@@ -11,7 +11,7 @@ public interface DAOLineaAlbaranEntrada {
 	public DataSource getDataSource();
 	public void setDataSource(DataSource dataSource);
 	/*CRUD y listar*/
-	public boolean create(LineaAlbaranEntrada lae);
+	public boolean create(final LineaAlbaranEntrada lae);
 	public LineaAlbaranEntrada read(int idLinea);
 	public boolean update(LineaAlbaranEntrada lae);
 	public List<LineaAlbaranEntrada> listar(int nAlbaran);

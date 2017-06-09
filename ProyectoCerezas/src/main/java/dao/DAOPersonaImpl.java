@@ -77,9 +77,10 @@ public class DAOPersonaImpl implements DAOPersona {
 		Persona p=null;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		
+	
 		String sql="select * from personas where cif_nif=?";
 		try{
+			
 			p=jdbc.queryForObject(sql,new Object[]{cifNif},new PersonaRowMapper());
 		}
 		catch(IncorrectResultSizeDataAccessException ics){
@@ -91,9 +92,40 @@ public class DAOPersonaImpl implements DAOPersona {
 			System.out.println("Read Persona - Error acceso de datos");
 			
 		}
-		
+
 		return p;
 	}
+	/**
+	 *  Función que lee persona por su id
+	 *  Arti No lo toques!!!  Funciona
+	 *  ****ListadoCliente - Lo usamos cuando en nuevo cliente, introducimos el DNI y le damos a enviar.
+	 * Nos recupera la persona por su id, después de haber recuperado el id de cliente.
+	 * @param idPersona
+	 * @return Persona
+	 */
+	public Persona read (int idPersona){
+		Persona p=null;
+		
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+	
+		String sql="select * from personas where id_persona=?";
+		
+		try{
+			
+			p=jdbc.queryForObject(sql,new Object[]{idPersona},new PersonaRowMapper());
+		}
+		catch(IncorrectResultSizeDataAccessException ics){
+			System.out.println("Read Personas - Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
+			
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("Read Persona - Error acceso de datos");
+			
+		}
+		return p;
+	}
+
 	
 	/**
 	 * Metdodo para borrar una persona "OJO:Solo se usa en los JUnit"

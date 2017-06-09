@@ -157,7 +157,7 @@ public class DAOAlbaranSalidaTest extends TestCase{
 		dao.create(u);
 		
 		List<AlbaranSalida> lista = dao.listarPendientes("B45263965"); //Solicito sólo los albaranes no facturados
-		System.out.println("La lista tiene " + lista.size() + " elementos."); //Debería decir 1
+		//System.out.println("La lista tiene " + lista.size() + " elementos."); //Debería decir 1
 		assertTrue(lista.size()>0);
 		
 		
@@ -189,15 +189,15 @@ public class DAOAlbaranSalidaTest extends TestCase{
 		
 		List<AlbaranSalida> lista = dao.listar(); //Listar todos
 		assertTrue(lista.size()>0);
-		System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
+		//System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
 		
 		lista = dao.listar("B45263965"); //Listar por DNI
 		assertTrue(lista.size()>0);
-		System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
+		//System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
 		
 		lista = dao.buscarFecha(d,h); //Listar por fechas
 		assertTrue(lista.size()>0);
-		System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
+		//System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
 		
 		dao.delete(a.getnAlbaran());
 		dao.delete(u.getnAlbaran());

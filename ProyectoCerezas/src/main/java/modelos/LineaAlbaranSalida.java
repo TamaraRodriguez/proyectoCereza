@@ -91,4 +91,10 @@ public class LineaAlbaranSalida{
 		this.nAlbaran = nAlbaran;
 	}
 
+	public void setIdLinea(int idLinea) {
+		this.idLinea = idLinea;
+	}
+	
+	
+
 }

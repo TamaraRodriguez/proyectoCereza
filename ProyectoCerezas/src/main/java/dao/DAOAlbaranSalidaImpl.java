@@ -166,13 +166,14 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 	}
 	/**
 	 * Creamos una función que duelve una lista con todos los albaranes de salida.
+	 * no facturados
 	 * @return lista
 	 */
 	public List<AlbaranSalida> listar(){
 		List<AlbaranSalida> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from albaranes_salida order by fecha desc";
+		String sql="select * from albaranes_salida where n_factura is Null order by fecha desc";
 		lista=jdbc.query(sql,new AlbaranSalidaRowMapper());
 		return lista;
 	}
@@ -190,7 +191,7 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 				+ "albaranes_salida.fecha,albaranes_salida.n_factura from albaranes_salida"
 				+ " join clientes on (albaranes_salida.n_cliente = clientes.n_cliente) join"
 				+ " personas on (personas.id_persona = clientes.id_persona)"
-				+ " where personas.cif_nif = ?; ";
+				+ " where personas.cif_nif = ? order by albaranes_salida.fecha desc ";
 		lista=jdbc.query(sql,new Object[]{cifNif},new AlbaranSalidaRowMapper());
 		return lista;
 	}

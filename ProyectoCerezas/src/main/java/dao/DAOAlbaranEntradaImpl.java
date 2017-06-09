@@ -175,13 +175,14 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 	
 	/**
 	 * Creamos una función que devuelve una lista con todos los albaranes de entrada.
+	 * no facturados
 	 * @return lista
 	 */
 	public List<AlbaranEntrada> listar(){
 		List<AlbaranEntrada> lista;
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		String sql="select * from albaranes_entrada order by fecha desc";
+		String sql="select * from albaranes_entrada where n_factura is Null order by fecha desc";
 		lista=jdbc.query(sql,new AlbaranEntradaRowMapper());
 		return lista;
 	}
@@ -201,7 +202,7 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 				+ "from albaranes_entrada "
 				  + "join agricultores on(agricultores.n_socio=albaranes_entrada.n_socio) "
 				  + "JOIN personas on (personas.id_persona=agricultores.id_persona)"
-				+ "WHERE cif_nif=?;";
+				+ "WHERE cif_nif=? order by albaranes_entrada.fecha desc";
 		lista=jdbc.query(sql,new Object[]{cifNif},new AlbaranEntradaRowMapper());
 		return lista;
 	}

@@ -19,3 +19,4 @@ public interface DAOCliente {
 	boolean delete(int nCliente);
 	
 }
+

@@ -109,7 +109,7 @@ public class DAOClienteImpl implements DAOCliente {
 
 		return c;
 	}
-	
+
 	/**
 	 * Función que recupera un objeto cliente por su nCliente, 
 	 * para saber si una persona es cliente o no.
@@ -180,6 +180,73 @@ public class DAOClienteImpl implements DAOCliente {
 	 * @param c
 	 * @return boolean -- Que determina si se ha llevado a cabo correctamente la función o no.
 	 */
+	/*public boolean update(Cliente c) {
+		boolean r = false;
+		
+		String sql = "update personas "
+				+ "join clientes on (personas.id_persona=clientes.id_persona) set "
+					+ "personas.cif_nif=?, "
+					+ "personas.nombre_razon_social=?,"
+					+ "personas.apellidos=?,"
+					+ "personas.direccion=?,"
+					+ "personas.telefono=?,"
+					+ "personas.email=? "
+				+ "where personas.id_persona=? and clientes.baja=0";
+		
+		/*String sql="update personas set "
+				+ "cif_nif=?, "
+				+ "nombre_razon_social=?,"
+				+ "apellidos=?,"
+				+ "direccion=?,"
+				+ "telefono=?,"
+				+ "email=? "
+			+ "where id_persona=? and id_persona not in (select id_persona from clientes where baja=0)";*/
+		/*System.out.println(c.getCifNif());
+		System.out.println(c.getNombreRazonSocial());
+		System.out.println(c.getApellidos());
+		System.out.println(c.getDireccion());
+		System.out.println(c.getTelefono());
+		System.out.println(c.getEmail());
+		System.out.println(c.getnCliente());
+		System.out.println(c.isBaja());
+		
+		
+		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
+		System.out.println("Estoy aquí 1");
+		try {
+			/*int n = jdbc.update(sql, new Object[] { 
+					c.getCifNif(), 
+					c.getNombreRazonSocial(), 
+					c.getApellidos(),
+					c.getDireccion(), 
+					c.getTelefono(), 
+					c.getEmail(), 
+					c.getIdPersona()});*/
+		/*	int n = jdbc.update(sql, new Object []{
+					c.getCifNif(),
+					c.getNombreRazonSocial(),
+					c.getApellidos(),
+					c.getDireccion(),
+					c.getTelefono(),
+					c.getEmail(),
+					c.getIdPersona()});
+			System.out.println("Antes");
+			r = n > 0;
+			System.out.println("despues "+ n);
+		} catch (DataAccessException dae) {
+			dae.printStackTrace();
+			System.out.println("Update - Error acceso de datos");
+		}
+		System.out.println("Estoy aquí 2");
+		return r;
+	}*/
+	/**
+	 * Función que modifica el objeto cliente. El cliente se busca por id_persona.
+	 * 
+	 * ******************Update para botón modificar del la jsp "modificarCliente"
+	 * @param c
+	 * @return boolean -- Que determina si se ha llevado a cabo correctamente la función o no.
+	 */
 	public boolean update(Cliente c) {
 		boolean r = false;
 
@@ -193,8 +260,21 @@ public class DAOClienteImpl implements DAOCliente {
 					+ "personas.email=? "
 				+ "where personas.id_persona=? and clientes.baja=0";
 
+		
+/*		
+		String sql = "update personas"
+					+ "	set "
+					+ "nombre_razon_social = ? "
+					+ "where id_persona = ? ;";
+					/*
+					+ "and 0 = (select baja "
+									+ "from clientes "
+									+ "where id_persona = ?);";
+*/
+		
 		JdbcTemplate jdbc = new JdbcTemplate(dataSource);
-
+		//System.out.println(c.getNombreRazonSocial());
+		//System.out.println(c.getIdPersona());
 		try {
 			int n = jdbc.update(sql, new Object[] { 
 					c.getCifNif(), 
@@ -203,7 +283,10 @@ public class DAOClienteImpl implements DAOCliente {
 					c.getDireccion(), 
 					c.getTelefono(), 
 					c.getEmail(), 
-					c.getIdPersona()});
+					c.getIdPersona(),
+					}
+					);
+			
 			r = n > 0;
 			
 		} catch (DataAccessException dae) {
@@ -213,6 +296,7 @@ public class DAOClienteImpl implements DAOCliente {
 
 		return r;
 	}
+	
 	/**
 	 * Función que devuelve un List con todos los clientes dados de alta
 	 * 

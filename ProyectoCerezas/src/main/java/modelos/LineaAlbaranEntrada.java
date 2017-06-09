@@ -74,4 +74,9 @@ public class LineaAlbaranEntrada {
 	public void setnAlbaran(int nAlbaran) {
 		this.nAlbaran = nAlbaran;
 	}
+	public void setIdLinea(int idLinea) {
+		this.idLinea = idLinea;
+	}
+	
+	
 }

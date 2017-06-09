@@ -37,9 +37,11 @@ public class Persona {
 		this.telefono = telefono;
 		this.email = email;
 	}
-	public void setIdPersona(int idPersona) {
+	public Persona(int idPersona){
 		this.idPersona = idPersona;
 	}
+	
+	
 	/**
 	 * Constructor con parámetros para crear objetos de tipo persona con el formulario.
 	 * @param cifNif
@@ -51,7 +53,6 @@ public class Persona {
 	 */
 	public Persona(String cifNif, String nombreRazonSocial, String apellidos, 
 			String direccion, String telefono, String email){
-		this.idPersona = -1;
 		this.cifNif = cifNif;
 		this.nombreRazonSocial = nombreRazonSocial;
 		this.apellidos = apellidos;
@@ -63,6 +64,9 @@ public class Persona {
 	 * GETTERS Y SETTERS
 	 *
 	 */
+	
+	
+	
 	public String getCifNif() {
 		return cifNif;
 	}
@@ -103,7 +107,9 @@ public class Persona {
 		return idPersona;
 	}
 	
-	
+	public void setIdPersona(int idPersona) {
+		this.idPersona = idPersona;
+	}
 	
 	
 }

@@ -13,4 +13,3 @@ public interface DAOPersona {
 	public boolean delete(int idPersona); // Borrar se usa en JUnit
 	
 }
-
