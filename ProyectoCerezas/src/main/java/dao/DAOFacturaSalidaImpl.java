@@ -251,4 +251,5 @@ public class DAOFacturaSalidaImpl implements DAOFacturaSalida{
 
 		return n>0;
 	}
+	
 }

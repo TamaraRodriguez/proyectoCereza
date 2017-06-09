@@ -277,4 +277,15 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 		return n>0;
 	}
 	
+	public double calcularPrecio(int nAlbaran){
+		double precio = 0;
+		
+		String sql="select sum(lineas_albaranes_e.precio_kg*lineas_albaranes_e.peso) from lineas_albaranes_e where lineas_albaranes_e.n_albaran=?";
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		precio=jdbc.update(sql,new Object[]{nAlbaran});
+		
+		return precio;
+	}
+	
 }

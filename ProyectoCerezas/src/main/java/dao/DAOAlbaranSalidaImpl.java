@@ -263,4 +263,15 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		return n>0;
 	}
 	
+	public double calcularPrecio(int nAlbaran){
+		double precio = 0;
+		
+		String sql="select sum(lineas_albaranes_s.precio_caja*lineas_albaranes_s.numero_cajas) from lineas_albaranes_s where lineas_albaranes_s.n_albaran=?";
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		precio=jdbc.update(sql,new Object[]{nAlbaran});
+		
+		return precio;
+	}
+	
 }

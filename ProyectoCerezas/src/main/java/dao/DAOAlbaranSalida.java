@@ -22,4 +22,5 @@ public interface DAOAlbaranSalida {
 	public List<AlbaranSalida> buscarFecha (Date fechaInicio, Date fechaFinal);
 	public List<AlbaranSalida> listarPendientes(String cifNif);
 	public boolean delete(int nAlbaran);
+	public double calcularPrecio(int nAlbaran);
 }
