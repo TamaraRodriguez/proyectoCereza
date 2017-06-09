@@ -240,10 +240,10 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		String sql="SELECT albaranes_salida.n_albaran,albaranes_salida.n_cliente,"
-				+ "albaranes_salida.fecha,albaranes_salida.n_factura from albaranes_salida"
-				+ " join clientes on (albaranes_salida.n_cliente = clientes.n_cliente) "
+				+ "albaranes_salida.fecha,albaranes_salida.n_factura from albaranes_salida "
+				+ "join clientes on (albaranes_salida.n_cliente = clientes.n_cliente) "
 				+ "join personas on (personas.id_persona = clientes.id_persona) "
-				+ "where personas.cif_nif = ?;  and albaranes_salida.n_factura is NULL;";
+				+ "where personas.cif_nif = ? and albaranes_salida.n_factura is NULL;";
 		lista=jdbc.query(sql,new Object[]{cifNif},new AlbaranSalidaRowMapper());
 		return lista;
 	}

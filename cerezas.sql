@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-06-2017 a las 11:44:13
+-- Tiempo de generación: 09-06-2017 a las 08:30:31
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.1
 
@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
   `n_cliente` int(11) NOT NULL,
   `id_persona` int(11) NOT NULL,
-  `baja` tinyint(1) NOT NULL
+  `baja` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +103,7 @@ CREATE TABLE `factura_s` (
   `iva` int(11) NOT NULL,
   `precio_neto` double(10,2) NOT NULL,
   `fecha` date NOT NULL,
-  `anulacion` tinyint(1) NOT NULL
+  `anulacion` tinyint(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -251,32 +251,32 @@ ALTER TABLE `variedades`
 -- AUTO_INCREMENT de la tabla `agricultores`
 --
 ALTER TABLE `agricultores`
-  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `n_socio` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_entrada`
 --
 ALTER TABLE `albaranes_entrada`
-  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `albaranes_salida`
 --
 ALTER TABLE `albaranes_salida`
-  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `n_albaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `n_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `factura_e`
 --
 ALTER TABLE `factura_e`
-  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `factura_s`
 --
 ALTER TABLE `factura_s`
-  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `n_factura` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `lineas_albaranes_e`
 --
@@ -291,7 +291,7 @@ ALTER TABLE `lineas_albaranes_s`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=114;
+  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
 --
 -- Restricciones para tablas volcadas
 --
