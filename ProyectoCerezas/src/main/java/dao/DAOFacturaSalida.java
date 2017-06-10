@@ -15,6 +15,6 @@ public interface DAOFacturaSalida {
 		public List<FacturaSalida> buscarFecha (Date fechaInicio, Date fechaFinal);
 		public boolean anularFactura(FacturaSalida fs);
 		public boolean delete(int nFactura); //Se usa en los JUnit
-		
+		public double calcularPrecioFactura(int nFactura);
 
 }

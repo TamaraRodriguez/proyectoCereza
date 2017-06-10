@@ -282,9 +282,16 @@ public class DAOAlbaranEntradaImpl implements DAOAlbaranEntrada{
 		
 		String sql="select sum(lineas_albaranes_e.precio_kg*lineas_albaranes_e.peso) from lineas_albaranes_e where lineas_albaranes_e.n_albaran=?";
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
-		
-		precio=jdbc.queryForObject(sql,new Object[]{nAlbaran},Double.class);
-		
+		try{
+			precio=jdbc.queryForObject(sql,new Object[]{nAlbaran},Double.class);
+		}
+		catch(IncorrectResultSizeDataAccessException ics){
+			System.out.println("CalcularPrecio AlbaranEntrada -- Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("CalcularPrecio AlbaranEntrada -- Error acceso de datos");
+		} 
 		return precio;
 	}
 	

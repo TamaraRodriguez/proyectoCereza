@@ -237,7 +237,7 @@ public class DAOFacturaSalidaImpl implements DAOFacturaSalida{
 	}
 	
 	/**
-	 * Metodo borrar factura, Borra una factura y pone a null todos los albaranes que tuviera esa factura.
+	 * Metodo borrar factura, Borra una factura y pone a null nFactura en los albaranes que tuviera esa factura.
 	 * OJO: Se usa sólo para los JUnit. Las facturas no se pueden borrar, solo modificar el estado
 	 */
 	
@@ -250,6 +250,28 @@ public class DAOFacturaSalidaImpl implements DAOFacturaSalida{
 		int n=jdbc.update(sql,new Object[]{nFactura});
 
 		return n>0;
+	}
+	
+	public double calcularPrecioFactura(int nFactura){
+		double precio = 0;
+		
+		String sql="select sum(lineas_albaranes_s.precio_caja*lineas_albaranes_s.numero_cajas) "
+				+ "from lineas_albaranes_s join albaranes_salida "
+				+ "on (lineas_albaranes_s.n_albaran=albaranes_salida.n_albaran) "
+				+ "where albaranes_salida.n_factura=?";
+		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
+		
+		try{
+			precio=jdbc.queryForObject(sql,new Object[]{nFactura},Double.class);
+		}
+		catch(IncorrectResultSizeDataAccessException ics){
+			System.out.println("CalcularPrecioFactura FacturaSalida -- Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("CalcularPrecioFactura FacturaSalida -- Error acceso de datos");
+		} 
+		return precio;
 	}
 	
 }

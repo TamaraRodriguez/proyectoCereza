@@ -269,7 +269,16 @@ class AlbaranSalidaRowMapper implements RowMapper<AlbaranSalida>{
 		String sql="select sum(lineas_albaranes_s.precio_caja*lineas_albaranes_s.numero_cajas) from lineas_albaranes_s where lineas_albaranes_s.n_albaran=?";
 		JdbcTemplate jdbc=new JdbcTemplate(dataSource);
 		
-		precio=jdbc.queryForObject(sql,new Object[]{nAlbaran},Double.class);
+		try{
+			precio=jdbc.queryForObject(sql,new Object[]{nAlbaran},Double.class);
+		}
+		catch(IncorrectResultSizeDataAccessException ics){
+			System.out.println("CalcularPrecio AlbaranSalida -- Data access exception thrown when a result was not of the expected size, for example when expecting a single row but getting 0 or more than 1 rows.");
+		}
+		catch(DataAccessException dae){
+			dae.printStackTrace();
+			System.out.println("CalcularPrecio AlbaranSalida -- Error acceso de datos");
+		} 
 		
 		return precio;
 	}

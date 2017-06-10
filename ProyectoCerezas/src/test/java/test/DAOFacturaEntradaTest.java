@@ -13,31 +13,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import dao.DAOAlbaranSalida;
-import dao.DAOCliente;
-import dao.DAOFacturaSalida;
-import dao.DAOLineaAlbaranSalida;
+import dao.DAOAlbaranEntrada;
+import dao.DAOAgricultor;
+import dao.DAOFacturaEntrada;
+import dao.DAOLineaAlbaranEntrada;
 import dao.DAOPersona;
 import dao.DAOVariedades;
 import junit.framework.TestCase;
-import modelos.AlbaranSalida;
-import modelos.Cliente;
-import modelos.FacturaSalida;
-import modelos.LineaAlbaranSalida;
+import modelos.AlbaranEntrada;
+import modelos.Agricultor;
+import modelos.FacturaEntrada;
+import modelos.LineaAlbaranEntrada;
 import modelos.Persona;
 import modelos.Variedades;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:Spring-Beans.xml"})
-public class DAOFacturaSalidaTest extends TestCase{
+public class DAOFacturaEntradaTest extends TestCase{
 	@Autowired
-	DAOLineaAlbaranSalida daola;
+	DAOLineaAlbaranEntrada daola;
 	
 	@Autowired
-	DAOAlbaranSalida daoal;
+	DAOAlbaranEntrada daoal;
 	
 	@Autowired
-	DAOCliente daoc;
+	DAOAgricultor daoc;
 	
 	@Autowired
 	DAOPersona daop;
@@ -46,7 +46,7 @@ public class DAOFacturaSalidaTest extends TestCase{
 	DAOVariedades daov;
 	
 	@Autowired
-	DAOFacturaSalida daof;
+	DAOFacturaEntrada daof;
 	
 	private static Date h;
 	
@@ -67,10 +67,10 @@ public class DAOFacturaSalidaTest extends TestCase{
 	public void testCreate(){
 		
 		//Creo una factura
-		FacturaSalida fac=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac);
 		
-		FacturaSalida x=daof.read(fac.getnFactura());
+		FacturaEntrada x=daof.read(fac.getnFactura());
 		
 		assertEquals(fac.getnFactura(),x.getnFactura());
 		assertEquals(fac.getFecha(),x.getFecha());
@@ -84,39 +84,39 @@ public class DAOFacturaSalidaTest extends TestCase{
 	@Test
 	public void testCalcularPrecio(){
 		
-		//Creo un Cliente
+		//Creo un Agricultor
 		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
 		daop.create(per);
 					
-		Cliente agri=new Cliente(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
+		Agricultor agri=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		daoc.create(agri);
 						
 		//Creo un albaran
-		AlbaranSalida a=new AlbaranSalida(-1,agri.getnCliente(),h,0);
+		AlbaranEntrada a=new AlbaranEntrada(-1,agri.getnSocio(),h,0);
 		daoal.create(a);
 						
 		//Creo una varidad
-		Variedades v=new Variedades("Tipo 1", 2.8, 2.5, 4.88);
+		Variedades v=new Variedades("Tipo 1", 2, 2.5, 5);
 		daov.create(v);
 						
 		//Creo una linea de albaran
-		LineaAlbaranSalida las = new LineaAlbaranSalida(a.getnAlbaran(),-1,v.getTipo(),5,v.getPesoCaja(),v.getPrecioCaja());
+		LineaAlbaranEntrada las = new LineaAlbaranEntrada(a.getnAlbaran(),-1,v.getTipo(),5,v.getPrecioKg());
 		daola.create(las);
 		
 		//Creo otra linea de albaran
-		LineaAlbaranSalida las2 = new LineaAlbaranSalida(a.getnAlbaran(),-1,v.getTipo(),8,v.getPesoCaja(),v.getPrecioCaja());
+		LineaAlbaranEntrada las2 = new LineaAlbaranEntrada(a.getnAlbaran(),-1,v.getTipo(),8,v.getPrecioKg());
 		daola.create(las2);
 		
 		//Creo otro albaran
-		AlbaranSalida a2=new AlbaranSalida(-1,agri.getnCliente(),h,0);
+		AlbaranEntrada a2=new AlbaranEntrada(-1,agri.getnSocio(),h,0);
 		daoal.create(a2);
 		
 		//Creo una linea en albaran a2
-		LineaAlbaranSalida las3 = new LineaAlbaranSalida(a2.getnAlbaran(),-1,v.getTipo(),1,v.getPesoCaja(),v.getPrecioCaja());
+		LineaAlbaranEntrada las3 = new LineaAlbaranEntrada(a2.getnAlbaran(),-1,v.getTipo(),1,v.getPrecioKg());
 		daola.create(las3);
 									
 		//Creo una factura
-		FacturaSalida fac=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac);
 		
 		//Meto esta factura en los dos albaranes creados
@@ -155,16 +155,16 @@ public class DAOFacturaSalidaTest extends TestCase{
 	public void testUpdate(){
 		
 		//Creo una factura
-		FacturaSalida fac=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac);
 		
 		//Creo otra factura con fecha e iva diferente pero mismo nFactura
 		Date d=new Date(h.getTime()-86400000);
 		
-		FacturaSalida fac2=new FacturaSalida(fac.getnFactura(),d,19,0,false);
+		FacturaEntrada fac2=new FacturaEntrada(fac.getnFactura(),d,19,0,false);
 		daof.update(fac2);
 				
-		FacturaSalida x=daof.read(fac.getnFactura());
+		FacturaEntrada x=daof.read(fac.getnFactura());
 				
 		assertEquals(fac2.getnFactura(),x.getnFactura());
 		assertEquals(fac2.getFecha(),x.getFecha());
@@ -178,35 +178,35 @@ public class DAOFacturaSalidaTest extends TestCase{
 	@Test
 	public void testListar(){
 		
-		//Creo un Cliente
+		//Creo un Agricultor
 		Persona per=new Persona(-1, "B45263965", "Cerezas S.A.", null, "toledo", "689526341", "cerezas@gmail.com");
 		daop.create(per);
 				
-		Cliente agri=new Cliente(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
+		Agricultor agri=new Agricultor(per.getIdPersona(), per.getCifNif(), per.getNombreRazonSocial(), per.getApellidos(), per.getDireccion(), per.getTelefono(), per.getEmail(), -1, false);
 		daoc.create(agri);
 				
 		//Creo un Albaran
-		AlbaranSalida a=new AlbaranSalida(-1,agri.getnCliente(),h,0);
+		AlbaranEntrada a=new AlbaranEntrada(-1,agri.getnSocio(),h,0);
 		daoal.create(a);
 		
 		//Creo otro albaran en otra fecha
 		Date d=new Date(h.getTime()-86400000);
-		AlbaranSalida a2=new AlbaranSalida(-1,agri.getnCliente(),d,0);
+		AlbaranEntrada a2=new AlbaranEntrada(-1,agri.getnSocio(),d,0);
 		daoal.create(a2);
 		
 		//Creo una factura con a
-		FacturaSalida fac=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac);
 		a.setnFactura(fac.getnFactura());
 		daoal.facturar(a.getnAlbaran(), fac.getnFactura());
 		
 		//Creo otra factura con a2
-		FacturaSalida fac2=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac2=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac2);
 		a2.setnFactura(fac2.getnFactura());
 		daoal.facturar(a2.getnAlbaran(), fac2.getnFactura());
 		
-		List<FacturaSalida> lista = daof.listar(); //Listar todos
+		List<FacturaEntrada> lista = daof.listar(); //Listar todos
 		assertTrue(lista.size()>0);
 		System.out.println("La lista tiene " + lista.size() + " elementos."); //Debe imprimir 2
 		
@@ -222,7 +222,7 @@ public class DAOFacturaSalidaTest extends TestCase{
 		daof.delete(fac2.getnFactura());
 		daoal.delete(a.getnAlbaran());
 		daoal.delete(a2.getnAlbaran());
-		daoc.delete(agri.getnCliente());
+		daoc.delete(agri.getnSocio());
 		daop.delete(per.getIdPersona());
 	}
 	
@@ -230,14 +230,14 @@ public class DAOFacturaSalidaTest extends TestCase{
 	public void testAnularFactura(){
 		
 		//Creo una factura
-		FacturaSalida fac=new FacturaSalida(-1,h,21,0,false);
+		FacturaEntrada fac=new FacturaEntrada(-1,h,21,0,false);
 		daof.create(fac);
 		
 		//Anulo la factura
 		fac.setAnulacion(true);
 		daof.anularFactura(fac);
 		
-		FacturaSalida x=daof.read(fac.getnFactura());
+		FacturaEntrada x=daof.read(fac.getnFactura());
 		
 		assertEquals(fac.getnFactura(),x.getnFactura());
 		assertEquals(fac.getFecha(),x.getFecha());
