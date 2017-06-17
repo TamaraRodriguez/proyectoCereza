@@ -19,8 +19,9 @@
     <div class="main-block">
     	<div class="main">
 			<div id="filtro">
+			<label><h1><spring:message code="facturas_salida" /></h1></label>
 				<form id="formulario" action="FiltroFacturaSalidanFactura" method="POST">
-					<label><h1><spring:message code="facturas_salida" /></h1></label><br><br>
+					
  					<label for="n_factura"><spring:message code="buscar_n_factura" /></label> 
 						<input type="text" id="n_factura" name = "n_factura" value=""/>
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
@@ -34,15 +35,17 @@
 			          <span class="glyphicon glyphicon-search"></span>
 			        </button>
 				</form>	
+				
 				<form id ="formulario" action="FiltroFacturaSalidaFecha" method="POST">        	 
-					<label for="fecha"><spring:message code="buscar_fecha"/></label> 
-						<input type="date" id="fecha" name = "fecha_inicio" value="" /><br>
-					<label for="fecha"><spring:message code="fecha" /></label> 
-						<input type="date" id="fecha" name = "fecha_final" />  
+					<label for="fecha"><spring:message code="buscar_fecha_inicio"/></label> 
+					<input type="date" id="fecha" name = "fecha_inicio" value="" />
+					<label for="fecha"><spring:message code="buscar_fecha_fin" /></label> 
+					<input type="date" id="fecha" name = "fecha_final" />  
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          <span class="glyphicon glyphicon-search"></span>
-			        </button>
-				</form><br><br>
+			        </button>  
+				</form>
+				
 				<form  id="formulario"  method="POST" >
 			        <a type="submit" id="modal" href="#dialog2" name="modal" class="btn btn-default btn-sm"  class="button">
 			        <span>Nueva<br/>Factura</span></a> 
@@ -52,7 +55,7 @@
 				<table>
 					<caption><h5><spring:message code="listado_facturas" /></h5></caption>
 					<thead>	
-						<tr>
+						<tr  id="texto">
 							<th><spring:message code = "n_factura"/></th>
 							<th><spring:message code = "cif_nif"/></th>
 							<th><spring:message code = "fecha"/></th>
@@ -65,21 +68,26 @@
 						<c:forEach items="${listaFacturas}" var="factura">
 							<tr>
 								<td>${factura.nFactura}</td>
-								<td>${factura.cifNif}</td>
+								<td>${factura.cifnif}</td>
 								<td>${factura.stringFecha}</td>
 								<td>${factura.precioNeto}</td>
 								<td>${factura.iva}</td>
 								<td>${factura.precioTotal}</td>		
+								
 								<c:if test="${factura.anulacion == false}">
 									<!-- EDITAR -->
-									<td title="<spring:message code='eliminar'/>">
+									<td title="<spring:message code='editar'/>">
 										<form action="ModificarFacturaSalida" method="POST">
 											<input type="hidden" name="n_factura" value="${factura.nFactura}"/>
 											<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-edit"></span></button>
 										</form></td> 
 									<!-- DAR DE BAJA -->
-									<td title="<spring:message code='baja'/>"><a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}','${factura.cifNif}','${factura.stringFecha}','${factura.precioNeto}','${factura.iva}','${factura.precioTotal}')" name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>  				               
+									<td title="<spring:message code='baja'/>">
+									<a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}','${factura.cifnif}',
+									'${factura.stringFecha}','${factura.precioNeto}','${factura.iva}','${factura.precioTotal}')" 
+									name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>  				               
 								</c:if>	
+								
 							</tr>
 	 					</c:forEach> 
 		           	</tbody>
@@ -123,9 +131,9 @@
           </form>
         </div>
     <script>
-      function mostrarDialogoConfirmarBajaFactura(nFactura,cifNif,stringFecha,precioNeto,iva,precioTotal){
+      function mostrarDialogoConfirmarBajaFactura(nFactura,cifnif,stringFecha,precioNeto,iva,precioTotal){
         document.getElementById("mod_nFactura").innerHTML=nFactura;
-        document.getElementById("mod_cifNif").innerHTML=cifNif;
+        document.getElementById("mod_cifNif").innerHTML=cifnif;
         document.getElementById("mod_fechaStr").innerHTML=fecha;
         document.getElementById("mod_precioNeto").innerHTML=precioNeto;
         document.getElementById("mod_iva").innerHTML=nAlbaran;

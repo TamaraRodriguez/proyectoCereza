@@ -15,7 +15,7 @@ html, body {
 }
 
 html {
-	min-width:100%
+	min-width:100%;
 }
 
 /* Global Structure---------------------------------------- */
@@ -74,6 +74,11 @@ html {
 	margin-left: -25%;
 	margin-right: 18%;
 	height: 35%;
+}
+#listado2{
+	margin-left: -25%;
+	margin-right: 18%;
+	height: 100%;
 }
 
 table{
@@ -422,6 +427,7 @@ section#content {
 	position:relative;
 	z-index:10;
 	padding:10px 10px;
+	
 }
 section#content1 {
 	position:relative;

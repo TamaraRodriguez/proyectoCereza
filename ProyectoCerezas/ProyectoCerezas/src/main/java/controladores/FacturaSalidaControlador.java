@@ -230,11 +230,11 @@ public class FacturaSalidaControlador {
 		List<AlbaranSalida> listaPendiente = daoal.listarPendientes(CifNif);
 		
 		if(p==null){
-			mv=new ModelAndView("nuevoCliente"); //Enviaría al controlador o la vista de nuevoCliente
+			mv=new ModelAndView("listadoClientes"); //Enviaría al controlador o la vista de nuevoCliente
 		}else{
 			
 			if(listaPendiente.size()<1){
-				mv=new ModelAndView("nuevoAlbaranSalida"); //Enviaria al controlador o la vista de nuevoAlbaranSalida
+				mv=new ModelAndView("listarAlbaranSalida"); //Enviaria al controlador o la vista de nuevoAlbaranSalida
 			}else{
 				
 				//Creo una factura sin datos con la fecha actual

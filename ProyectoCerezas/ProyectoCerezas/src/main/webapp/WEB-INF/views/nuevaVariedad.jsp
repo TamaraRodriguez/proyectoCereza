@@ -33,7 +33,6 @@
                 <label for="precioCaja"><spring:message code="precio_caja" /></label> 
                 	<input type="text" id="precio_caja" name="precio_caja" placeholder="Precio de la Caja"/><br/><br/>
                 <div id="filtro">          
-                  <input type="hidden" name="tipo" value ="${tipo}">
                   <button type="submit" class="btn btn-lg btn-default"/><spring:message code="aceptar"/></button>
                 </div>
               </form> 

@@ -128,13 +128,13 @@
 				<tbody>
 					<tr class="fila">
 						<form action="addAcumuladorE" method="POST">	
-							<td><select name="tipoCereza">
+							<td style= "color:black"><select name="tipoCereza">
 								<c:forEach items="${listadoTipos}" var="tipo">
 									<option value="${tipo.tipo}">${tipo.tipo}</option>
 								</c:forEach>
 							</select></td><br>
-							<td><input type="text" id="peso" name = "peso" /></td><br>
-							<td><input type="text" id="precioKg" name = "precio_kg" /></td>
+							<td style= "color:black"><input type="text" id="peso" name = "peso" /></td><br>
+							<td style= "color:black"><input type="text" id="precioKg" name = "precio_kg" disabled/></td>
 				 
 							<input type="hidden" name="n_albaran" value="${albaranEntrada.nAlbaran}"/></div>
 							<td><button type="submit" class="btn btn-default btn-sm" ><spring:message code = "anadir"/></button></td>

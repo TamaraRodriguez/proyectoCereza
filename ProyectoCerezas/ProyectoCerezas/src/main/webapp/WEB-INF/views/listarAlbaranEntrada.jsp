@@ -35,11 +35,13 @@
 			        </button>
 		        </form> 
 		        <form id="formulario" action="FiltroAlbaranEntradaFecha"  method="POST"> 
-		          	<label for="fecha"><spring:message code="buscar_fecha" /></label> 
-		          		<input type="text" id="fecha" value="" /> 
-		          	<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
-		          		<span class="glyphicon glyphicon-search"></span>
-		          	</button>
+		          	<label for="fechaInicio"><spring:message code="buscar_fecha_inicio" /></label> 
+					<input type="date" id="fechaInicio" name = "fecha_inicio" value="" /><br>
+					<label for="fechaFinal"><spring:message code="buscar_fecha_fin" /></label> 
+					<input type="date" id="fechaFinal" name = "fecha_final" value="" /> 
+					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
+			         	<span class="glyphicon glyphicon-search">
+			        </button>
 		        </form>
 		        <form>
 		        	<a type="submit" id="modal" href="#dialog2" name="modal" class="btn btn-default btn-sm"  class="button">

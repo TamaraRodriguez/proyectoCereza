@@ -60,7 +60,7 @@
 							<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-edit"></span></button>
 						</form></td>
 	                  <!-- DAR DE BAJA -->
-	                  <td title="<spring:message code='baja'/>"><a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaVariedad('${p.tipo}','${p.precioKg}','${p.pesoCaja}','${p.precioCaja}')" name="modal" class="btn btn-default btn-sm" class="button"><span class="glyphicon glyphicon-remove"></span></a></td>   
+	                  <!-- <td title="<spring:message code='baja'/>"><a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaVariedad('${p.tipo}','${p.precioKg}','${p.pesoCaja}','${p.precioCaja}')" name="modal" class="btn btn-default btn-sm" class="button"><span class="glyphicon glyphicon-remove"></span></a></td> -->   
 	                </tr>
 	                </c:forEach>  
 	          </tbody>

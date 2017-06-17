@@ -68,7 +68,7 @@
 			</div><br><br>
 			<div id="filtro">
               	<label><h3><spring:message code="modificar_cliente" /></h3></label>
-				<form action="ModificadoAlbaranSalida" method="POST">
+				<form action="modificadoAlbaranSalida" method="POST">
 					<label for="n_albaran"><spring:message code="n_albaran" /></label> 
 						<input type="text" id="n_albaran" name="n_albaran" value="${albaranSalida.nAlbaran}" disabled/>
 						<input type = "hidden" name = "n_albaran" value = "${albaranSalida.nAlbaran}"/><br>
@@ -132,14 +132,14 @@
 					<tbody>
 						<tr class="fila">
 							<form action="addAcumulador" method="POST">		
-								<td><select name="tipoCereza">
+								<td style= "color:black"><select name="tipoCereza">
 									<c:forEach items="${listadoTipos}" var="tipo">
 										<option value="${tipo.tipo}">${tipo.tipo}</option>
 									</c:forEach>
 									</select></td>
-								<td><input type="text" id="nCaja" name = "n_cajas"/></td>					
-								<td><input type="text" id="pesoCaja" name = "peso_caja" /></td>				
-								<td><input type="text" id="precioCaja" name = "precio_caja" />
+								<td style= "color:black"><input type="text" id="nCaja" name = "n_cajas"/></td>					
+								<td style= "color:black"><input type="text" id="pesoCaja" name = "peso_caja" disabled/></td>				
+								<td style= "color:black"><input type="text" id="precioCaja" name = "precio_caja" disabled/>
 								<input type="hidden" name="n_albaran" value="${albaranSalida.nAlbaran}"/></td>
 								<td><button type="submit" class="btn btn-default btn-sm" ><spring:message code = "anadir"/></button></td>
 							</form>
