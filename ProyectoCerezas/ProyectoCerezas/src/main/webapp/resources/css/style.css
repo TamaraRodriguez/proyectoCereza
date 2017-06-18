@@ -73,7 +73,7 @@ html {
 #listado1{
 	margin-left: -25%;
 	margin-right: 18%;
-	height: 35%;
+	/*height: 35%;*/
 }
 #listado2{
 	margin-left: -25%;
@@ -458,7 +458,7 @@ section#content1 {
 .main-block{
 	width:1450px;
 	margin:0 auto;
-	margin-top:-600px;
+	margin-top:-25%;
 	margin-bottom:30px;
 	background:url(../images/tail-cont.png);
     padding:38px 10px;
@@ -820,7 +820,7 @@ a.close{
 
 .window {
 	margin:0 auto;
-	height: 45%;
+	height: 70%;
   	position:fixed;
   	top: -1000px;
     left:30%;
@@ -910,29 +910,11 @@ input{
 	display: inline-block;
 	width: 20%;
 	margin-top: 10px;
-	/*margin-left: -25%;*/
 	margin-right: 20px;
-	/*margin-bottom: -550px auto;*/
 	position: relative;
 }
 
-/*fotos*/
-
-/*section#content3 {
-	position:relative;
-	z-index:10;
-	padding:90px 0;
-}*/
-
-/*.foto{
-	float:left;
-	width:90%;
-	height: 100%;
-}*/
-
 #foto{
 	position: relative;
-/*	width:50px;
-	height: 100px;*/
 	margin-left: -10%;
 }

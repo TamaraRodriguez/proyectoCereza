@@ -21,8 +21,7 @@
 			<div id="filtro">
 			<label><h1><spring:message code="facturas_salida" /></h1></label>
 				<form id="formulario" action="FiltroFacturaSalidanFactura" method="POST">
-					
- 					<label for="n_factura"><spring:message code="buscar_n_factura" /></label> 
+					<label for="n_factura"><spring:message code="buscar_n_factura" /></label> 
 						<input type="text" id="n_factura" name = "n_factura" value=""/>
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          <span class="glyphicon glyphicon-search"></span>
@@ -38,13 +37,13 @@
 				
 				<form id ="formulario" action="FiltroFacturaSalidaFecha" method="POST">        	 
 					<label for="fecha"><spring:message code="buscar_fecha_inicio"/></label> 
-					<input type="date" id="fecha" name = "fecha_inicio" value="" />
+					<input type="text" id="fecha" name = "fecha_inicio" value="" /><br>
 					<label for="fecha"><spring:message code="buscar_fecha_fin" /></label> 
-					<input type="date" id="fecha" name = "fecha_final" />  
+					<input type="text" id="fecha" name = "fecha_final" />  
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          <span class="glyphicon glyphicon-search"></span>
 			        </button>  
-				</form>
+				</form><br><br>
 				
 				<form  id="formulario"  method="POST" >
 			        <a type="submit" id="modal" href="#dialog2" name="modal" class="btn btn-default btn-sm"  class="button">
@@ -83,9 +82,13 @@
 										</form></td> 
 									<!-- DAR DE BAJA -->
 									<td title="<spring:message code='baja'/>">
-									<a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}','${factura.cifnif}',
+									<form action="EliminarFacturaSalida" method="POST">
+											<input type="hidden" name="n_factura" value="${factura.nFactura}"/>
+											<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></button>
+										</form></td> 
+									<!--  <a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}','${factura.cifnif}',
 									'${factura.stringFecha}','${factura.precioNeto}','${factura.iva}','${factura.precioTotal}')" 
-									name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>  				               
+									name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>-->				               
 								</c:if>	
 								
 							</tr>
@@ -131,7 +134,7 @@
           </form>
         </div>
     <script>
-      function mostrarDialogoConfirmarBajaFactura(nFactura,cifnif,stringFecha,precioNeto,iva,precioTotal){
+      function mostrarDialogoConfirmarBajaFactura(n_factura,cifnif,stringFecha,precioNeto,iva,precioTotal){
         document.getElementById("mod_nFactura").innerHTML=nFactura;
         document.getElementById("mod_cifNif").innerHTML=cifnif;
         document.getElementById("mod_fechaStr").innerHTML=fecha;

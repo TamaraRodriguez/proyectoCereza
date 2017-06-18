@@ -19,42 +19,41 @@
     <div class="main-block">
     	<div class="main">
 			<div id="filtro">
+			<label><h1><spring:message code="facturas_entrada" /></h1></label>
 				<form id="formulario" action="FiltroFacturaEntradanFactura" method="POST">
-					<label><h1><spring:message code="facturas_entrada" /></h1></label><br><br>
-				 	<label for="n_factura"><spring:message code="buscar_n_factura" /></label> 
-					<input type="text" id="n_factura" value="" />
+					<label for="n_factura"><spring:message code="buscar_n_factura" /></label> 
+					<input type="text" id="n_factura" name = "n_factura" value="" />
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          <span class="glyphicon glyphicon-search"></span>
 			    	</button> 
 				</form>	 	
-				<form id="formulario" action="FiltroFacturaSalidaCifNif" method="POST">		
+				<form id="formulario" action="FiltroFacturaEntradaCifNif" method="POST">		
 					<label for="cif_nif"><spring:message code="buscar_cif_nif" /></label> 
-					<input type="text" id="cif_nif" value="" /> 
+					<input type="text" id="cif_nif" name = "cif_nif" value=""/>
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          <span class="glyphicon glyphicon-search"></span>
 			        </button>
 				</form>	
-				<form id="formulario" action="FiltroFacturaSalidaFecha" method="POST">    
-					<label for="fechaInicio"><spring:message code="buscar_fecha_inicio" /></label> 
-					<input type="date" id="fechaInicio" name = "fecha_inicio" value="" /><br>
-					<label for="fechaFinal"><spring:message code="buscar_fecha_fin" /></label> 
-					<input type="date" id="fechaFinal" name = "fecha_final" value="" /> 
+				<form id ="formulario" action="FiltroFacturaEntradaFecha" method="POST">        	 
+					<label for="fecha"><spring:message code="buscar_fecha_inicio"/></label> 
+					<input type="text" id="fecha" name = "fecha_inicio" value="" /><br>
+					<label for="fecha"><spring:message code="buscar_fecha_fin" /></label> 
+					<input type="text" id="fecha" name = "fecha_final" />  
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
-			         	<span class="glyphicon glyphicon-search">
-			        </button>
+			          <span class="glyphicon glyphicon-search"></span>
+			        </button>  
 				</form><br><br>
 				<form  id="formulario"  method="POST" >
 			        <a type="submit" id="modal" href="#dialog2" name="modal" class="btn btn-default btn-sm"  class="button">
 			        <span>Nueva<br/>Factura</span></a> 
-		        </form>
+		        </form> 
 			</div>
 			<div id="listado">
 				<table>
 					<caption><h5><spring:message code="listado_facturas" /></h5></caption>
 					<thead>	
-						<tr>
+						<tr  id="texto">
 							<th><spring:message code = "n_factura"/></th>
-							<th><spring:message code = "n_socio"/></th>
 							<th><spring:message code = "cif_nif"/></th>
 							<th><spring:message code = "fecha"/></th>
 							<th><spring:message code = "precio_neto"/></th>
@@ -66,20 +65,30 @@
 						<c:forEach items="${listaFacturas}" var="factura">
 							<tr>
 								<td>${factura.nFactura}</td>
-								<td>${factura.nSocio}</td>
 								<td>${factura.cifnif}</td>
 								<td>${factura.stringFecha}</td>
 								<td>${factura.precioNeto}</td>
 								<td>${factura.iva}</td>
-								<td>${factura.precioTotal}</td>
-								<!-- EDITAR -->
-								<td title="<spring:message code='eliminar'/>">
-									<form action="ModificarFacturaEntrada" method="POST">
-										<input type="hidden" name="n_factura" value="${factura.nFactura}"/>
-										<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-edit"></span></button>
-									</form></td> 
-								<!-- DAR DE BAJA -->
-								<td title="<spring:message code='baja'/>"><a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}', '${factura.nSocio}', '${factura.cifnif}','${factura.stringFecha}','${factura.precioNeto}','${factura.iva}','${factura.precioTotal}')" name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>
+								<td>${factura.precioTotal}</td>		
+								
+								<c:if test="${factura.anulacion == false}">
+									<!-- EDITAR -->
+									<td title="<spring:message code='editar'/>">
+										<form action="ModificarFacturaEntrada" method="POST">
+											<input type="hidden" name="n_factura" value="${factura.nFactura}"/>
+											<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-edit"></span></button>
+										</form></td> 
+									<!-- DAR DE BAJA -->
+									<td title="<spring:message code='baja'/>">
+									<form action="EliminarFacturaEntrada" method="POST">
+											<input type="hidden" name="n_factura" value="${factura.nFactura}"/>
+											<button type= "submit"  class="btn btn-default btn-sm"><span class="glyphicon glyphicon-remove"></button>
+										</form></td> 
+									<!--  <a type="submit" id="modal" href="#baja" onclick="mostrarDialogoConfirmarBajaFactura('${factura.nFactura}','${factura.cifnif}',
+									'${factura.stringFecha}','${factura.precioNeto}','${factura.iva}','${factura.precioTotal}')" 
+									name="modal" class="btn btn-default btn-sm" class="button" ><span class="glyphicon glyphicon-remove"></span></a></td>-->				               
+								</c:if>	
+								
 							</tr>
 	 					</c:forEach> 
 		           	</tbody>

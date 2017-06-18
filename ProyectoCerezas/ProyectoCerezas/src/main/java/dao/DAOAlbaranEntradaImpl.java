@@ -166,6 +166,7 @@ public boolean create(final AlbaranEntrada a){
 				
 		boolean r=false;
 		
+		System.out.println(nFactura +" "+ nAlbaran);
 		if(nFactura>0){
 			String sql="update albaranes_entrada set n_factura=? where n_albaran=?";
 		
@@ -192,7 +193,7 @@ public boolean create(final AlbaranEntrada a){
 			try{
 				int n=jdbc.update(
 					sql,
-					new Object[]{nFactura, nAlbaran});
+					new Object[]{nAlbaran});
 				r=n>0;
 			}
 			catch(DataAccessException dae){

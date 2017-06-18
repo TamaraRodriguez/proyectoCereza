@@ -318,6 +318,7 @@ public class DAOFacturaEntradaImpl implements DAOFacturaEntrada {
 	
 	public void meterDni(FacturaEntrada fe){
 		String dni=null;
+		System.out.println(fe.getnFactura());
 		String sql="select DISTINCT personas.cif_nif from personas "
 				+ "join agricultores on (agricultores.id_persona=personas.id_persona) "
 				+ "join albaranes_entrada on (agricultores.n_socio=albaranes_entrada.n_socio) "

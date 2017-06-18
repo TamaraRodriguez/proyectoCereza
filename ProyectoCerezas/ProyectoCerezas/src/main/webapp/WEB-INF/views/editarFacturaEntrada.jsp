@@ -3,187 +3,213 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <c:import url="/WEB-INF/views/head.jsp" />
+<!--==============================content=================================-->
+<!-- FONDO GENERAL-->
+<script>
+	$(function() {
+		//  Initialize Backgound Stretcher
+		$('BODY').bgStretcher({
+			images : [ 'resources/images/fondoblanco.jpg' ],
+			imageWidth : 1600,
+			imageHeight : 964,
+			resizeProportionally : true
+		});
+	});
+</script>
+<section id="content">
+	<div class="main-block">
+		<div class="main">
+			<label><h1><spring:message code="facturas_entrada" /></h1></label>
+			<div id="listado1">
+				<table>
+					<caption><h5><spring:message code="datos_socio" /></h5>
+					</caption>
+					<thead>
+						<tr id="texto">
+							<th><spring:message code='nombre_razon_social' /></th>
+							<th><spring:message code='apellido' /></th>
+							<th><spring:message code='cif_nif' /></th>
+							<th><spring:message code='direccion' /></th>
+							<th><spring:message code='telefono' /></th>
+							<th><spring:message code='email' /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="fila">
+							<td>${agricultor.nombreRazonSocial}</td>
+							<td>${agricultor.apellidos}</td>
+							<td>${agricultor.cifNif}</td>
+							<td>${agricultor.direccion}</td>
+							<td>${agricultor.telefono}</td>
+							<td>${agricultor.email}</td>
+						</tr>
+					</tbody>
+				</table>
 
-<div id="datos">
-	<h1>
-		<spring:message code='datos_socio' />
-	</h1>
+				<table>
+					<caption><h5><spring:message code="datos_empresa" /></h5></caption>
+					<thead>
+						<tr id="texto">
+							<th><spring:message code='nombre_razon_social' /></th>
+							<th><spring:message code='cif_nif' /></th>
+							<th><spring:message code='direccion' /></th>
+							<th><spring:message code='telefono' /></th>
+							<th><spring:message code='email' /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="fila">
+							<td>Nombre de la empresa</td>
+							<td>CIF</td>
+							<td>Dirección</td>
+							<td>Teléfonos</td>
+							<td>E-mail</td>
+						</tr>
+					</tbody>
+				</table>
 
-	<table>
-		<!-- Datos del agricultor que hace la entrega -->
-		<!-- recoger los datos del socio en la tabla personas -->
-		<tr>
-			<!-- comprobar que el controlodar que se encargue de recoger los datos del socio relacionado con el nº socio -->
-			<th><spring:message code='nombre_razon_social' /></th>
-			<th><spring:message code='apellido' /></th>
-			<th><spring:message code='cif_nif' /></th>
-			<th><spring:message code='direccion' /></th>
-			<th><spring:message code='telefono' /></th>
-			<th><spring:message code='email' /></th>
-		</tr>
-		<tr>
-			<td>${socio.nombreRazonSocial}</td>
-			<td>${socio.apellido}</td>
-			<td>${socio.cifNif}</td>
-			<td>${socio.direccion}</td>
-			<td>${socio.telefono}</td>
-			<td>${socio.email}</td>
-		</tr>
-	</table>
+				<form action="updateFacturaEntradaFecha" method="POST">
+					<table>
+						<caption>
+							<h5>
+								<spring:message code="datos_factura" />
+							</h5>
+						</caption>
+						<thead>
+							<tr id="texto">
+								<th><spring:message code='n_factura' /></th>
+								<th><spring:message code='fecha' /></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="fila">
+								<td>${factura.nFactura}</td>
+								<td style="color: black"><input type="text" id="fecha" name="fecha"
+									value="${factura.stringFecha}" /></td>
+								<td><input type="hidden" name="n_factura"
+									value="${factura.nFactura}" />
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-edit"></span>
+									</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+			<!-- LISTA DE ALBARANES -->
+			<div id="listado1">
+				<table>
+					<caption><h5><spring:message code="listado_albaranes" /></h5></caption>
+					<thead>
+						<tr id="texto">
+							<th><spring:message code="n_albaran" /></th>
+							<th><spring:message code="fecha" /></th>
+							<th><spring:message code='tipo' /></th>
+							<th><spring:message code='peso' /></th>
+							<th><spring:message code='precio_kg' /></th>
+							<th><spring:message code='precio_neto' /></th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${factura.albaranes}" var="albaran">
+							<tr class="fila">
+								<td>${albaran.nAlbaran}</td>
+								<td>${albaran.stringFecha}</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td>${albaran.precioNetoE}</td>
+								<!-- Borrar no borra el albaran, sólo lo quita, es decir pone a cero el valor nFactura del albaran -->
+								<td><form action="FacturarAlbaranEntrada" method="POST">
+										<input type="hidden" name="n_factura" value="${factura.nFactura}" /> 
+										<input type="hidden" name="n_albaran" value="${albaran.nAlbaran}" /> 
+										<input type="hidden" name="borrar" value="true" />
+										<button type="submit" class="btn btn-default btn-sm">
+											<span class="glyphicon glyphicon-remove"></span>
+										</button>
+									</form></td>
+							</tr>
+							<!-- LINEAS DE CADA ALBARAN -->
+							<c:forEach items="${albaran.lineas}" var="lineaAlbaran">
+								<tr class="fila">
+									<td></td>
+									<td></td>
+									<td>${lineaAlbaran.tipo}</td>
+									<td>${lineaAlbaran.peso}</td>
+									<td>${lineaAlbaran.precioKg}</td>
+									<td>${lineaAlbaran.precioTotal}</td>
+								</tr>
+							</c:forEach>
+						</c:forEach>
+					</tbody>
+				</table>
+				<!-- ALBARANES NO FACTURADOS -->
+				<table>
+					<caption><h5><spring:message code="pendientes" /></h5></caption>
+					<thead>
+						<tr id="texto">
+							<th><spring:message code="n_albaran" /></th>
+							<th><spring:message code="fecha" /></th>
+							<th><spring:message code='precio_neto' /></th>
+							<th></th>
+							<!-- Añade este albaran a la factura en la que estamos, es decir pone el valor nFactura en el albaran -->
+						</tr>
+					</thead>
+					<tbody>
 
-	<h1>
-		<spring:message code='datos_empresa' />
-	</h1>
-	<table>
-		<!-- Datos de la empresa -->
-		<tr>
-			<th><spring:message code='nombre_razon_social' /></th>
-			<th><spring:message code='cif_nif' /></th>
-			<th><spring:message code='direccion' /></th>
-			<th><spring:message code='telefono' /></th>
-			<th><spring:message code='email' /></th>
-		</tr>
-		<tr>
-			<!-- Hay que introducir manualmente en el código los datos de la empresa de cerezas -->
-			<td>Nombre de la empresa</td>
-			<td>CIF</td>
-			<td>Dirección</td>
-			<td>Teléfonos</td>
-			<td>E-mail</td>
-		</tr>
-	</table>
-</div>
-
-
-<div id=factura>
-	<form action="#" method="POST">
-		<!-- Editar Factura, modificar fecha, iva y precio Neto -->
-
-		<div id=cabeceraFactura>
-			<table>
-				<tr class="fila">
-					<th><spring:message code='nFactura' /></th>
-					<th><spring:message code='Fecha' /></th>
-				</tr>
-
-				<tr class="fila">
-					<td><input type="text" id="nFactura" name="nFactura"
-						value="${factura.nFactura}" disabled /></td>
-					<td><input type="date" id="Fecha" name="Fecha"
-						value="${factura.stringFecha}" /></td>
-				</tr>
-			</table>
-		</div>
-
-		<div id="albaranes">
-			<table>
-				<!-- Cabecera de la tabla -->
-				<tr class="fila">
-					<th><spring:message code="n_albaran" /></th>
-					<th><spring:message code="fecha" /></th>
-					<th><spring:message code='tipo' /></th>
-					<th><spring:message code='peso' /></th>
-					<th><spring:message code='precioKg' /></th>
-					<th><spring:message code='precioNeto' /></th>
-					<th><spring:message code='borrar' /></th>
-					<!-- Borrar no borra el albaran, sólo lo quita, es decir pone a cero el valor nFactura del albaran -->
-				</tr>
-			</table>
-
-			<table>
-				<!-- Muestra los albaranes que tiene esta factura -->
-				<c:set var="i" value="0" />
-				<c:forEach items="${factura.albaranes}" var="albaran">
-					<tr class='fila fila_${i%2 eq 0 ? "par" : "impar"}'>
-						<td>${albaran.nAlbaran}</td>
-						<td>${albaran.stringFecha}</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>${albaran.precioNeto}</td>
-						<!-- Borrar no borra el albaran, sólo lo quita, es decir pone a cero el valor nFactura del albaran -->
-						<td><input type="hidden" name="nAlabran" value="nAlbaran" />
-							<button type="submit" class="btn btn-default btn-sm">
-								<spring:message code="borrar" />
-							</button></td>
-					<!-- Consultar si esto funcionará o no como espero -->
-						<c:forEach items="${albaran.lineas}" var="lineaAlbaran">
-							<!-- Muestra las lineas que tiene cada albaran -->
-							<tr>
-								<td>${lineaAlbaran.tipo}</td>
-								<td>${lineaAlbaran.peso}</td>
-								<td>${lineaAlbaran.precioKg}</td>
-								<td>${lineaAlbaran.precioTotal}</td>
+						<c:forEach items="${listaPendiente}" var="albaranPendiente">
+							<tr class="fila">
+								<td>${albaranPendiente.nAlbaran}</td>
+								<td>${albaranPendiente.stringFecha}</td>
+								<td>${albaranPendiente.precioNetoE}</td>
+								<td><form action="FacturarAlbaranEntrada" method="POST">
+										<input type="hidden" name="n_factura"
+											value="${factura.nFactura}" /> <input type="hidden"
+											name="n_albaran" value="${albaranPendiente.nAlbaran}" /> <input
+											type="hidden" name="borrar" value="false" />
+										<button type="submit" class="btn btn-default btn-sm">
+											<spring:message code="anadir" />
+										</button>
+									</form></td>
 							</tr>
 						</c:forEach>
-						
-					</tr>
-					<c:set var="i" value="${i+1}" />
-				</c:forEach>
-			</table>
+					</tbody>
+				</table>
+			</div>
+			<!-- TOTALES Y Modificar IVA de la factura, por defecto aparece 21%-->
+			<div id="listado1">
+				<form action="updateFacturaEntradaIVA" method="POST">
+					<table>
+						<caption><h5><spring:message code="total_factura" /></h5></caption>
+						<thead>
+							<tr id="texto">
+								<th><spring:message code="precio_neto" /></th>
+								<th><spring:message code="iva" /></th>
+								<th><spring:message code="totalIva" /></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="fila">
+								<td style="color: black"><input type="text" id="precioNeto"
+									name="precioNeto" value="${factura.precioNeto}" disabled /></td>
+								<td style="color: black"><input type="number" id="iva"
+									name="iva" value="${factura.iva}" /></td>
+								<td style="color: black"><input type="text"
+									id="precioTotal" name="precioTotal"
+									value="${factura.precioTotal}" disabled /></td>
+								<td><input type="hidden" name="n_factura"
+									value="${factura.nFactura}" />
+									<button type="submit" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-edit">
+									</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
 		</div>
-
-		<!-- Muestra una lista con los albaranes de este soico que no están facturados -->
-		<div id="filtro">
-			<table>
-				<!-- Cabecera tabla pendientes -->
-				<tr>
-					<th><spring:message code="n_albaran" /></th>
-					<th><spring:message code="fecha" /></th>
-					<th><spring:message code='precioNeto' /></th>
-					<th><spring:message code='añadir' /></th>
-					<!-- Añade este albaran a la factura en la que estamos, es decir pone el valor nFactura en el albaran -->
-				</tr>
-			</table>
-
-			<table>
-				<!-- Albaranes pendientes muestra datos de los albaranes de este agricultor, pendientes de facturar. Se podrian integrar más detalle a esta vista -->
-				<c:set var="i" value="0" />
-				<c:forEach items="${listaPendiente}" var="albaranPendiente">
-					<tr class='fila fila_${i%2 eq 0 ? "par" : "impar"}'>
-						<td>${albaranPendiente.nAlbaran}</td>
-						<td>${albaranPendiente.stringFecha}</td>
-						<td>${albaranPendiente.precioNeto}</td>
-						<td><input type="hidden" name="nAlabran" value="nAlbaran" />
-							<button type="submit" class="btn btn-default btn-sm">
-								<spring:message code="añadir" />
-							</button></td>
-					</tr>
-
-					<c:set var="i" value="${i+1}" />
-				</c:forEach>
-			</table>
-		</div>
-
-		<h1>
-			<spring:message code='total_factura' />
-		</h1>
-		<div id="totales">
-			<table>
-				<tr class="fila">
-					<th><spring:message code="precioNeto" /></th>
-					<th><spring:message code="iva" /></th>
-					<th><spring:message code="totalIva" /></th>
-				</tr>
-
-				<tr class="fila">
-					<td><input type="text" id="precioNeto" name="precioNeto"
-						value="${factura.precioNeto}" disabled /></td>
-					<td><input type="number" id="iva" name="iva"
-						value="${factura.iva}" /></td>
-					<td><input type="text" id="precioTotal" name="precioTotal"
-						value="${factura.precioTotal}" disabled /></td>
-				</tr>
-
-			</table>
-		</div>
-		<button type="submit" class="btn btn-default btn-sm"
-			onClick="location.href = 'listarFacturaEntrada.jsp' ">
-			<spring:message code="enviar" />
-		</button>
-
-	</form>
-</div>
+	</div>
+</section>
 
 
 <c:import url="/WEB-INF/views/end.jsp" />

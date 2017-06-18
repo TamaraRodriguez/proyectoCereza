@@ -22,7 +22,7 @@
       	<label><h1><spring:message code="modificar_albaran_entrada" /></h1></label><br>
 		<div id="listado1">
 			<table>
-				<caption><h5><spring:message code="datos_cliente" /></h5></caption>
+				<caption><h5><spring:message code="datos_socio" /></h5></caption>
 				<thead>
 					<tr id="texto">
 		                <th><spring:message code = "nombre_razon_social"/></th>

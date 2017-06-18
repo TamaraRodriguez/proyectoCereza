@@ -72,7 +72,7 @@
   <!-- _____________VENTANA MODAL BUSCAR (tipo)_________ -->
   <div class="overlay" id="overlay" style="display:none;"></div>
     <div id="dialog2" class="window">
-        <h1><spring:message code='registrar_variedad' /></h1><br/><br/><br/>
+        <h1><spring:message code='registrar_variedad' /></h1>
         <p><spring:message code='introduce_variedad' /></p><br/><br/>
         <form action="nuevaVariedad" method="POST" >
           <label for="variedad"><spring:message code="variedad" /></label> 
@@ -86,9 +86,9 @@
   <!-- _____________VENTANA MODAL DAR DE BAJA_________ -->
   <div class="overlay" id="overlay" style="display:none;"></div>
      <div id="baja" class="window">
-       <h1><spring:message code="dar_baja"/></h1><br/><br/>
-       <p><spring:message code="desea_baja_variedad"/></p>
+       <h1><spring:message code="dar_baja"/></h1>
        <form action="eliminarVariedad" method="POST">
+       		<p><spring:message code="desea_baja_variedad"/></p>
            <h6><label id="mod_tipo"></label></h6>
            <h6><label id="mod_precioKg"></label><h6>
            <h6><label id="mod_pesoCaja"></label></h6>

@@ -29,20 +29,20 @@
        			</form> 
 		        <form id="formulario" action="FiltroAlbaranEntradaCifNif"  method="POST"> 
 			        <label for="cif_nif"><spring:message code="buscar_cif_nif" /></label> 
-			          	<input type="text" id="cif_nif" value="" />
+			          	<input type="text" id="cif_nif" name = "cif_nif" value="" />
 			        <button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			          	<span class="glyphicon glyphicon-search"></span>
 			        </button>
 		        </form> 
 		        <form id="formulario" action="FiltroAlbaranEntradaFecha"  method="POST"> 
 		          	<label for="fechaInicio"><spring:message code="buscar_fecha_inicio" /></label> 
-					<input type="date" id="fechaInicio" name = "fecha_inicio" value="" /><br>
+					<input type="text" id="fechaInicio" name = "fecha_inicio" value="" /><br>
 					<label for="fechaFinal"><spring:message code="buscar_fecha_fin" /></label> 
-					<input type="date" id="fechaFinal" name = "fecha_final" value="" /> 
+					<input type="text" id="fechaFinal" name = "fecha_final" value="" /> 
 					<button title="<spring:message code='buscar'/>" type="submit"  class="btn btn-default btn-sm">
 			         	<span class="glyphicon glyphicon-search">
 			        </button>
-		        </form>
+		        </form><br><br>
 		        <form>
 		        	<a type="submit" id="modal" href="#dialog2" name="modal" class="btn btn-default btn-sm"  class="button">
 		          	<span>Nuevo<br/>Albaran</span></a> 

@@ -265,7 +265,6 @@ public class FacturaEntradaControlador {
 			@RequestParam (value="n_albaran") int nAlbaran,
 			@RequestParam (value="borrar") boolean borrarAlbaran){
 		
-		
 		ModelAndView mv = new ModelAndView("editarFacturaEntrada");
 		int nf=nFactura;
 		if(borrarAlbaran){
